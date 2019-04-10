@@ -20,7 +20,7 @@ It's still a work in progress and heavily biased torwards the types of models I 
     - [Douglas, Martin, and Whitteridge, (1989). A canonical microcircuit for neocortex. Neural Comput. 1, 480–488.](https://www.researchgate.net/publication/242918941_A_Canonical_Microcircuit_for_Neocortex)
     - [Bastos, Usrey, Adams, Mangun, Fries, and Friston (2012). Canonical Microcircuits for Predictive Coding. Neuron 76](https://www.cell.com/neuron/fulltext/S0896-6273(12)00959-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627312009592%3Fshowall%3Dtrue)
 
-## Feel like contributing? Amazing!🎉
+## Feel like contributing? Amazing! 🎉
 If you want to contribute, please regard the following rules:
 - Keep the hierarchy, folder-like, formatting as is. Or create an issue if you have a better suggestion!
 - If the type of a parameter is known but dimensions vary, write: `parameter: [ __×__ double ]`
