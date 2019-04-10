@@ -5,7 +5,7 @@ This set of parameters needs to appear in the priors and constitutes, for instan
 
 ```
 Ep
-├─── S # population variance
+├─── S                              # population variance
 ├─── T: [n×3 double]                # rate constants for AMPA, GABA and NMDA channels
 ├─── G                              # intrinsic connectivity
 ├─── GN_intrin: [n×1 double]        # input scale to NMDA for each of the n sources. Pyramidal NMDA?? Superficial/deep?
