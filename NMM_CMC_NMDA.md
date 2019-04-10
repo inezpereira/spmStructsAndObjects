@@ -144,10 +144,34 @@ DCM
 |    ├─── IS
 |    ├─── FS
 |    ├─── g
-|    ├─── f
+|    ├─── f: 'spm_fx_cmm_NMDA'
 |    ├─── x
 |    ├─── n
 |    ├─── pC
+|    |   ├─── S
+|    |   ├─── T
+|    |   ├─── G
+|    |   ├─── GN_intrin
+|    |   ├─── GA_intrin
+|    |   ├─── GG_intrin
+|    |   ├─── GNi_intrin
+|    |   ├─── GAi_intrin
+|    |   ├─── GGi_intrin
+|    |   ├─── CV
+|    |   ├─── E
+|    |   ├─── A
+|    |   ├─── AN
+|    |   ├─── C
+|    |   ├─── H
+|    |   ├─── R
+|    |   ├─── D
+|    |   ├─── Lpos
+|    |   ├─── L
+|    |   ├─── J
+|    |   ├─── a
+|    |   ├─── b
+|    |   ├─── c
+|    |   ├─── d
 |    ├─── hE
 |    ├─── hC
 |    ├─── m
@@ -156,15 +180,47 @@ DCM
 |    ├─── l
 |    ├─── Hz
 |    ├─── dt
-├─── name
+├─── name: '<name of DCM file>'
 ├─── xY
+|    ├─── Dfile: '<path to preprocessed EEG data file>'
+|    ├─── y
+|    ├─── xy
+|    ├─── modality: 'EEG'
+|    ├─── name
+|    ├─── Ic
+|    ├─── Time
+|    ├─── dt
+|    ├─── coord2D
+|    ├─── pst
+|    ├─── It
+|    ├─── nt
+|    ├─── code
+|    ├─── scale
+|    ├─── X0
+|    ├─── R
+|    ├─── Hz
+|    ├─── csd
+|    ├─── orig_data_size
+|    ├─── inds_used_size2
+|    ├─── csd_per_trial
+|    ├─── U
+|    ├─── Q
 ├─── options
+|    ├─── trials
+|    ├─── analysis: 'CSD'
+|    ├─── model: 'CMM_NMDA'
+|    ├─── spatial: 'IMG'
+|    ├─── Tidcm
+|    ├─── Fdcm
+|    ├─── Nmodes
+|    ├─── D
 ├─── Lpos
-├─── Sname
+├─── Sname: {'SourceName1', 'SourceName2, ... }
 ├─── A
 ├─── C
 ├─── B
 ├─── xU
+|    ├─── X
 ├─── val
 ├─── dtf
 ├─── ccf
@@ -175,6 +231,31 @@ DCM
 ├─── Ep
 ├─── Cp
 ├─── Pp
+|    ├─── S
+|    ├─── T
+|    ├─── G
+|    ├─── GN_intrin
+|    ├─── GA_intrin
+|    ├─── GG_intrin
+|    ├─── GNi_intrin
+|    ├─── GAi_intrin
+|    ├─── GGi_intrin
+|    ├─── GGi_intrin
+|    ├─── CV
+|    ├─── E
+|    ├─── A
+|    ├─── AN
+|    ├─── C
+|    ├─── H
+|    ├─── R
+|    ├─── D
+|    ├─── Lpos
+|    ├─── L
+|    ├─── J
+|    ├─── a
+|    ├─── b
+|    ├─── c
+|    ├─── d
 ├─── Hc
 ├─── Rc
 ├─── Hs
