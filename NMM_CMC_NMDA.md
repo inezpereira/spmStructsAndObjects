@@ -2,6 +2,7 @@
 
 In the model, you will find the following substruct multiple times, which will be called `model_definition`. 
 This set of parameters needs to appear in the priors and constitutes, for instance, the posterior estimate substruct `DCM.Ep`.
+`n` stands for the number of sources which are modelled.
 
 ```
 Ep
@@ -35,12 +36,12 @@ And now, I give you the DCM struct:
 ```
 DCM
 ├─── M
-|    ├─── P
+|    ├─── P                         # model parameters
 |    |    ├─── model_definition
-|    ├─── pE
+|    ├─── pE                        # prior expectation
 |    |    ├─── model_definition
 |    ├─── Nmax
-|    ├─── dipfit
+|    ├─── dipfit                    # spatial model specification. Gives dipole structure??
 |    |    ├─── model
 |    |    ├─── type
 |    |    ├─── Ic
@@ -179,9 +180,9 @@ DCM
 |    ├─── D                           # time bin decimation       (usually 1 or 2)??
 ├─── Lpos
 ├─── Sname: {'S1', 'S2, ... }         # source names
-├─── A
-├─── C
-├─── B
+├─── A                                # binary constraints on the extrinsic (between source) connections
+├─── C:n×0 empty sparse double matrix # binary constraints on the regions which receive external input. In this case, we are collecting resting-state data, hence the zero.
+├─── B                                # binary constraints on the modulatory connections for each of the m conditions.
 ├─── xU                               # design
 |    ├─── X
 ├─── val
@@ -208,3 +209,8 @@ DCM
 
 ## Resources:
 - [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m)
+- [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m)
+  - The lead field (L) is constructed using the specific parameters in P and, where necessary, information in the dipole structure dipfit. For ECD models P.Lpos and P.L encode the position and moments of the ECD. The field `dipfit.type` ('ECD', 'LFP' or 'IMG') determines whether the model is ECD or not. For imaging reconstructions the paramters `P.L` are a (m x n) matrix of coefficients that scale the contrition of n sources to `m = dipfit.Nm` modes encoded in `dipfit.G`. For LFP models (the default), `P.L` simply encodes the electrode gain for each source contributing a LFP.
+  
+## Special thanks
+I want to thank Moritz Gruber for helping me get started on this and sharing his notes and thoughts with me. It made searching through the spm repository a much easier task!
