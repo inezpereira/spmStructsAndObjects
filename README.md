@@ -1,7 +1,8 @@
 # Analysis of DCM struc in SPM 
-A community-fed documentation for the DCM structs available on SPM12
+A community-fed documentation for the DCM structs available on SPM12.
+It's still a work in progress and heavily biased torwards the types of models I am dealing with presently, so contributions are very welcome.
 
-**Abbreviations and resources:**
+## Abbreviations and resources: 📖
 - SPM: Statistical Parametric Mapping
     - [SPM on Scholarpedia](http://www.scholarpedia.org/article/SPM)
 - DCM: Dynamic Causal Modeling
@@ -18,3 +19,9 @@ A community-fed documentation for the DCM structs available on SPM12
 - CMC: canonical microcircuit
     - [Douglas, Martin, and Whitteridge, (1989). A canonical microcircuit for neocortex. Neural Comput. 1, 480–488.](https://www.researchgate.net/publication/242918941_A_Canonical_Microcircuit_for_Neocortex)
     - [Bastos, Usrey, Adams, Mangun, Fries, and Friston (2012). Canonical Microcircuits for Predictive Coding. Neuron 76](https://www.cell.com/neuron/fulltext/S0896-6273(12)00959-2?_returnURL=https%3A%2F%2Flinkinghub.elsevier.com%2Fretrieve%2Fpii%2FS0896627312009592%3Fshowall%3Dtrue)
+
+## Feel like contributing? Amazing!🎉
+If you want to contribute, please regard the following rules:
+- Keep the hierarchy, folder-like, formatting as is. Or create an issue if you have a better suggestion!
+- If the type of a parameter is known but dimensions vary, write: `parameter: [ __×__ double ]`
+- Comments to a single field of the struct should preferably be written as inline comments next to the specific field. If they are too long, create a footnote.
