@@ -228,9 +228,9 @@ DCM
 ├─── fsd
 ├─── pst
 ├─── Hz
-├─── Ep
-├─── Cp
-├─── Pp
+├─── Ep # posterior means
+├─── Cp # posterior covariance matrices
+├─── Pp # posterior probability of each parameter
 |    ├─── S
 |    ├─── T
 |    ├─── G
@@ -256,8 +256,8 @@ DCM
 |    ├─── b
 |    ├─── c
 |    ├─── d
-├─── Hc
-├─── Rc
+├─── Hc # Model estimates 
+├─── Rc # Residuals
 ├─── Hs
 ├─── Ce
 ├─── Ce_Eh
