@@ -1,4 +1,4 @@
-# Analysis of DCM struc in SPM 
+# Analysis of the DCM struc in SPM 
 A community-fed documentation for the DCM structs available on SPM12.
 It's still a work in progress and heavily biased torwards the types of models I am dealing with presently, so contributions are very welcome.
 
