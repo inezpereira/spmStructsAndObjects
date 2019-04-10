@@ -31,6 +31,7 @@ Ep
 ├─── d                              # channel noise (basis set coefficients)??
 ```
 
+And now, I give you the DCM struct:
 ```
 DCM
 ├─── M
@@ -204,3 +205,6 @@ DCM
 ├─── ID                               # data ID
 
 ```
+
+## Resources:
+- [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m)
