@@ -1,58 +1,43 @@
 ## Neural mass model with CMC and NMDA parameters
 
+In the model, you will find the following substruct multiple times, which will be called `model_definition`. 
+This set of parameters needs to appear in the priors and constitutes, for instance, the posterior estimate substruct `DCM.Ep`.
+
+```
+Ep
+├─── S # population variance
+├─── T: [n×3 double] # rate constants for AMPA, GABA and NMDA channels
+├─── G # intrinsic connectivity
+├─── GN_intrin: [n×1 double] # input scale to NMDA for each of the n sources. Pyramidal NMDA?? Superficial/deep?
+├─── GA_intrin: [n×1 double] # input scale to AMPA for each of the n sources.
+├─── GG_intrin: [n×1 double] # input scale to GABA for each of the n sources.
+├─── GNi_intrin: [n×1 double] # input scale to interneurons NMDA
+├─── GAi_intrin: [n×1 double] # Mg-switch sigmoid scale, slope and sensitivity 
+├─── GGi_intrin: [n×1 double] # input scale to GABA for each of the n sources
+├─── CV: [1×n double] # membrane capacitance for all n sources
+├─── E # background noise
+├─── A # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
+├─── AN # extrinsic connections for NMDA (same shape as A)
+├─── C # subcortical input
+├─── H # intrinsic connectivity. Unused?
+├─── R # onset and dispersion.
+├─── D # delays (unused)
+├─── Lpos # ROIs (unused)
+├─── L # leadfield
+├─── J # contributing states
+├─── a # neuronal innovations?
+├─── b # channel noise (not source-specific)??
+├─── c # channel noise (source-specific)??
+├─── d # channel noise (basis set coefficients)??
+```
+
 ```
 DCM
 ├─── M
 |    ├─── P
-|    |    ├─── S
-|    |    ├─── T
-|    |    ├─── G
-|    |    ├─── GN_intrin
-|    |    ├─── GA_intrin
-|    |    ├─── GG_intrin
-|    |    ├─── GNi_intrin
-|    |    ├─── GAi_intrin
-|    |    ├─── GGi_intrin
-|    |    ├─── CV
-|    |    ├─── E
-|    |    ├─── A
-|    |    ├─── AN
-|    |    ├─── C
-|    |    ├─── H
-|    |    ├─── R
-|    |    ├─── D
-|    |    ├─── Lpos
-|    |    ├─── L
-|    |    ├─── J
-|    |    ├─── a
-|    |    ├─── b
-|    |    ├─── c
-|    |    ├─── d
+|    |    ├─── model_definition
 |    ├─── pE
-|    |    ├─── S
-|    |    ├─── T
-|    |    ├─── G
-|    |    ├─── GN_intrin
-|    |    ├─── GA_intrin
-|    |    ├─── GG_intrin
-|    |    ├─── GNi_intrin
-|    |    ├─── GAi_intrin
-|    |    ├─── GGi_intrin
-|    |    ├─── CV
-|    |    ├─── E
-|    |    ├─── A
-|    |    ├─── AN
-|    |    ├─── C
-|    |    ├─── H
-|    |    ├─── R
-|    |    ├─── D
-|    |    ├─── Lpos
-|    |    ├─── L
-|    |    ├─── J
-|    |    ├─── a
-|    |    ├─── b
-|    |    ├─── c
-|    |    ├─── d
+|    |    ├─── model_definition
 |    ├─── Nmax
 |    ├─── dipfit
 |    |    ├─── model
@@ -148,30 +133,7 @@ DCM
 |    ├─── x
 |    ├─── n
 |    ├─── pC
-|    |   ├─── S
-|    |   ├─── T
-|    |   ├─── G
-|    |   ├─── GN_intrin
-|    |   ├─── GA_intrin
-|    |   ├─── GG_intrin
-|    |   ├─── GNi_intrin
-|    |   ├─── GAi_intrin
-|    |   ├─── GGi_intrin
-|    |   ├─── CV
-|    |   ├─── E
-|    |   ├─── A
-|    |   ├─── AN
-|    |   ├─── C
-|    |   ├─── H
-|    |   ├─── R
-|    |   ├─── D
-|    |   ├─── Lpos
-|    |   ├─── L
-|    |   ├─── J
-|    |   ├─── a
-|    |   ├─── b
-|    |   ├─── c
-|    |   ├─── d
+|    |   ├─── model_definition
 |    ├─── hE
 |    ├─── hC
 |    ├─── m
@@ -228,36 +190,13 @@ DCM
 ├─── fsd
 ├─── pst
 ├─── Hz
-├─── Ep # posterior means
-├─── Cp # posterior covariance matrices
-├─── Pp # posterior probability of each parameter
-|    ├─── S
-|    ├─── T
-|    ├─── G
-|    ├─── GN_intrin
-|    ├─── GA_intrin
-|    ├─── GG_intrin
-|    ├─── GNi_intrin
-|    ├─── GAi_intrin
-|    ├─── GGi_intrin
-|    ├─── GGi_intrin
-|    ├─── CV
-|    ├─── E
-|    ├─── A
-|    ├─── AN
-|    ├─── C
-|    ├─── H
-|    ├─── R
-|    ├─── D
-|    ├─── Lpos
-|    ├─── L
-|    ├─── J
-|    ├─── a
-|    ├─── b
-|    ├─── c
-|    ├─── d
-├─── Hc # Model estimates 
-├─── Rc # Residuals
+├─── Ep             # posterior estimates??
+|    ├─── model_definition
+├─── Cp             # posterior covariance matrices
+├─── Pp             # posterior probability of each parameter
+|    ├─── model_definition
+├─── Hc             # Model estimates 
+├─── Rc             # Residuals
 ├─── Hs
 ├─── Ce
 ├─── Ce_Eh
