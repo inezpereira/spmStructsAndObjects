@@ -143,8 +143,8 @@ DCM
 |    ├─── Hz
 |    ├─── dt
 ├─── name: '<name of DCM file>'
-├─── xY
-|    ├─── Dfile: '<path to preprocessed EEG data file>'
+├─── xY: [1x1 struct]                                   # data
+|    ├─── Dfile: '<path/to/preprocessed/EEG/data>'
 |    ├─── y
 |    ├─── xy
 |    ├─── modality: 'EEG'
@@ -170,37 +170,37 @@ DCM
 ├─── options
 |    ├─── trials
 |    ├─── analysis: 'CSD'
-|    ├─── model: 'CMM_NMDA'
-|    ├─── spatial: 'IMG'
-|    ├─── Tidcm
-|    ├─── Fdcm
-|    ├─── Nmodes
-|    ├─── D
+|    ├─── model: 'CMM_NMDA'           # 'ERP', 'SEP', 'CMC', 'LFP', 'NMM' or 'MFM'
+|    ├─── spatial: 'IMG'              # 'ECD', 'LFP' or 'IMG'     (see spm_erp_L)
+|    ├─── Tidcm                       # [start end] time window in ms
+|    ├─── Fdcm                        # [start end] Frequency window in Hz
+|    ├─── Nmodes                      # number of spatial modes???
+|    ├─── D                           # time bin decimation       (usually 1 or 2)??
 ├─── Lpos
-├─── Sname: {'SourceName1', 'SourceName2, ... }
+├─── Sname: {'S1', 'S2, ... }         # source names
 ├─── A
 ├─── C
 ├─── B
-├─── xU
+├─── xU                               # design
 |    ├─── X
 ├─── val
-├─── dtf
-├─── ccf
-├─── coh
-├─── fsd
-├─── pst
-├─── Hz
-├─── Ep             # posterior estimates??
+├─── dtf                              # directed transfer functions (source space)
+├─── ccf                              # cross covariance functions (source space)
+├─── coh                              # cross coherence functions (source space)
+├─── fsd                              # specific delay functions (source space)
+├─── pst                              # peristimulus time
+├─── Hz                               # frequency (vector with integer valuesof the analyzed frequency spectrum, e.g. if 2-10 Hz, then DCM.Hz is the same as the vector [2:10].
+├─── Ep                               # conditional expectation. Meaning your posterior estimates of the model parameters??
 |    ├─── model_definition
-├─── Cp             # posterior covariance matrices
-├─── Pp             # posterior probability of each parameter
+├─── Cp                               # conditional covariance. posterior covariance matrices??
+├─── Pp                               # conditional probability. posterior probability of each parameter??
 |    ├─── model_definition
-├─── Hc             # Model estimates 
-├─── Rc             # Residuals
-├─── Hs
-├─── Ce
+├─── Hc                               # conditional responses (y), channel space. Model estimates for the generated data??
+├─── Rc                               # conditional residuals (y), channel space. Residuals??
+├─── Hs                               # conditional responses (y), source space
+├─── Ce                               # eML error covariance
 ├─── Ce_Eh
-├─── F
-├─── ID
+├─── F                                # Laplace log evidence
+├─── ID                               # data ID
 
 ```
