@@ -1,7 +1,9 @@
-# dcm_struc
+# Analysis of DCM struc in SPM 
 A community-fed documentation for the DCM structs available on SPM12
 
 **Abbreviations and resources:**
+- SPM: Statistical Parametric Mapping
+    - [SPM on Scholarpedia](http://www.scholarpedia.org/article/SPM)
 - DCM: Dynamic Causal Modeling
     - If you are not familiar with this concept, consider reading [this article on Scholarpedia](http://scholarpedia.org/article/Dynamic_causal_modeling)
 - EEG: Electroencephalography/Electroencephalogram
