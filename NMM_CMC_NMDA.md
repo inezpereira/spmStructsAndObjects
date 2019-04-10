@@ -129,11 +129,11 @@ DCM
 |    |    ├─── Nm
 |    |    ├─── Nd
 |    |    ├─── gainmat
-|    ├─── IS
-|    ├─── FS
-|    ├─── g
-|    ├─── f: 'spm_fx_cmm_NMDA'
-|    ├─── x
+|    ├─── IS: 'spm_csd_mtf'                             # Spectral response of a NMM (transfer function x noise spectrum)
+|    ├─── FS 
+|    ├─── g: 'spm_gx_erp'                               # observer for a neural mass model of event related potentials. Unused?
+|    ├─── f: 'spm_fx_cmm_NMDA'                          # calls state equations of motion for canonical neural-mass and mean-field models 
+|    ├─── x                                             # neural states. Initialized as zero sparse matrix.
 |    ├─── n
 |    ├─── pC                                            # prior (co)variances
 |    |   ├─── model_definition
@@ -215,6 +215,7 @@ DCM
   - Defines prior moments on the parameters with [spm_cmc_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmc_priors.m) or accepts user input.
   - Defines priors on the spatial model with [spm_L_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_L_priors.m) or accepts user input.
   - Defines initial states and equations of motion with [spm_dcm_x_neural.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_x_neural.m)
+  - Defines initial states and equations of motion through [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m).
 - [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m)
   - The lead field (L) is constructed using the specific parameters in P and, where necessary, information in the dipole structure dipfit. For ECD models P.Lpos and P.L encode the position and moments of the ECD. The field `dipfit.type` ('ECD', 'LFP' or 'IMG') determines whether the model is ECD or not. For imaging reconstructions the paramters `P.L` are a (m x n) matrix of coefficients that scale the contrition of n sources to `m = dipfit.Nm` modes encoded in `dipfit.G`. For LFP models (the default), `P.L` simply encodes the electrode gain for each source contributing a LFP.
   
