@@ -2,12 +2,13 @@
 
 In the model, you will find the following substruct multiple times, which will be called `model_definition`. 
 This set of parameters needs to appear in the priors and constitutes, for instance, the posterior estimate substruct `DCM.Ep`.
+
 `n` stands for the number of sources which are modelled.
 
 ```
 Ep
-├─── S                              # population variance
-├─── T: [n×3 double]                # rate constants for AMPA, GABA and NMDA channels
+├─── S                              # population variance.
+├─── T: [n×3 double]                # time constants for AMPA, GABA and NMDA channels
 ├─── G                              # intrinsic connectivity
 ├─── GN_intrin: [n×1 double]        # input scale to NMDA for each of the n sources. Pyramidal NMDA?? Superficial/deep?
 ├─── GA_intrin: [n×1 double]        # input scale to AMPA for each of the n sources.
@@ -20,8 +21,8 @@ Ep
 ├─── A                              # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
 ├─── AN                             # extrinsic connections for NMDA (same shape as A)
 ├─── C                              # subcortical input
-├─── H                              # intrinsic connectivity. Unused?
-├─── R                              # onset and dispersion.
+├─── H                              # intrinsic connectivity. Unused? Synaptic densities?
+├─── R                              # onset and dispersion
 ├─── D                              # delays (unused)
 ├─── Lpos                           # ROIs (unused)
 ├─── L                              # leadfield
@@ -42,7 +43,7 @@ DCM
 |    |    ├─── model_definition
 |    ├─── Nmax
 |    ├─── dipfit                    # spatial model specification. Gives dipole structure??
-|    |    ├─── model
+|    |    ├─── model: 'CMM_NMDA'
 |    |    ├─── type
 |    |    ├─── Ic
 |    |    ├─── location
@@ -134,7 +135,7 @@ DCM
 |    ├─── f: 'spm_fx_cmm_NMDA'
 |    ├─── x
 |    ├─── n
-|    ├─── pC
+|    ├─── pC                                            # prior (co)variances
 |    |   ├─── model_definition
 |    ├─── hE
 |    ├─── hC
@@ -179,8 +180,8 @@ DCM
 |    ├─── Nmodes                      # number of spatial modes???
 |    ├─── D                           # time bin decimation       (usually 1 or 2)??
 ├─── Lpos
-├─── Sname: {'S1', 'S2, ... }         # source names
-├─── A                                # binary constraints on the extrinsic (between source) connections
+├─── Sname: {'S1', 'S2, ... }                         # source names
+├─── A: {[n×n double]  [n×n double]  [n×n double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling the activity of three channels??
 ├─── C:n×0 empty sparse double matrix # binary constraints on the regions which receive external input. In this case, we are collecting resting-state data, hence the zero.
 ├─── B                                # binary constraints on the modulatory connections for each of the m conditions.
 ├─── xU                               # design
@@ -209,6 +210,11 @@ DCM
 
 ## Resources:
 - [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m)
+- [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m)
+  - Because priors are specified under log normal assumptions, most parameters are simply scaling coefficients with a prior expectation and variance of one.  After log transform this renders `pE = 0` and `pC = 1`;
+  - Defines prior moments on the parameters with [spm_cmc_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmc_priors.m) or accepts user input.
+  - Defines priors on the spatial model with [spm_L_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_L_priors.m) or accepts user input.
+  - Defines initial states and equations of motion with [spm_dcm_x_neural.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_x_neural.m)
 - [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m)
   - The lead field (L) is constructed using the specific parameters in P and, where necessary, information in the dipole structure dipfit. For ECD models P.Lpos and P.L encode the position and moments of the ECD. The field `dipfit.type` ('ECD', 'LFP' or 'IMG') determines whether the model is ECD or not. For imaging reconstructions the paramters `P.L` are a (m x n) matrix of coefficients that scale the contrition of n sources to `m = dipfit.Nm` modes encoded in `dipfit.G`. For LFP models (the default), `P.L` simply encodes the electrode gain for each source contributing a LFP.
   
