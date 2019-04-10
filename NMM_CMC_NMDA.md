@@ -1,4 +1,4 @@
-# Neural mass model with CMC and NMDA parameters
+## Neural mass model with CMC and NMDA parameters
 
 ```
 DCM
