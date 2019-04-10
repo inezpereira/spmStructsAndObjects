@@ -3,20 +3,20 @@
 In the model, you will find the following substruct multiple times, which will be called `model_definition`. 
 This set of parameters needs to appear in the priors and constitutes, for instance, the posterior estimate substruct `DCM.Ep`.
 
-`n` stands for the number of sources which are modelled.
+`m` stands for the number of sources which are modelled.
 
 ```
 Ep
 ├─── S                              # population variance.
-├─── T: [n×3 double]                # time constants for AMPA, GABA and NMDA channels
+├─── T: [m×3 double]                # time constants for AMPA, GABA and NMDA channels
 ├─── G                              # intrinsic connectivity
-├─── GN_intrin: [n×1 double]        # input scale to NMDA for each of the n sources. Pyramidal NMDA?? Superficial/deep?
-├─── GA_intrin: [n×1 double]        # input scale to AMPA for each of the n sources.
-├─── GG_intrin: [n×1 double]        # input scale to GABA for each of the n sources.
-├─── GNi_intrin: [n×1 double]       # input scale to interneurons NMDA
-├─── GAi_intrin: [n×1 double]       # Mg-switch sigmoid scale, slope and sensitivity 
-├─── GGi_intrin: [n×1 double]       # input scale to GABA for each of the n sources
-├─── CV: [1×n double]               # membrane capacitance for all n sources
+├─── GN_intrin: [m×1 double]        # input scale to NMDA for each of the m sources. Pyramidal NMDA?? Superficial/deep?
+├─── GA_intrin: [m×1 double]        # input scale to AMPA for each of the m sources.
+├─── GG_intrin: [m×1 double]        # input scale to GABA for each of the m sources.
+├─── GNi_intrin: [m×1 double]       # input scale to interneurons NMDA
+├─── GAi_intrin: [m×1 double]       # Mg-switch sigmoid scale, slope and sensitivity 
+├─── GGi_intrin: [m×1 double]       # input scale to GABA for each of the n sources
+├─── CV: [1×m double]               # membrane capacitance for all n sources
 ├─── E                              # background noise
 ├─── A                              # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
 ├─── AN                             # extrinsic connections for NMDA (same shape as A)
@@ -134,12 +134,12 @@ DCM
 |    ├─── g: 'spm_gx_erp'                               # observer for a neural mass model of event related potentials. Unused?
 |    ├─── f: 'spm_fx_cmm_NMDA'                          # calls state equations of motion for canonical neural-mass and mean-field models 
 |    ├─── x                                             # neural states. Initialized as zero sparse matrix.
-|    ├─── n
+|    ├─── n                                             # total number of neural states. Defined as length(spm_vec(DCM.M.x))
 |    ├─── pC                                            # prior (co)variances
 |    |   ├─── model_definition
-|    ├─── hE
-|    ├─── hC
-|    ├─── m
+|    ├─── hE                                            # prespecified as 8? Why? What does this represent?
+|    ├─── hC                                            # prespecified as 1/128? Why? What does this represent?
+|    ├─── m                                             # number of sources
 |    ├─── u
 |    ├─── U
 |    ├─── l
@@ -181,8 +181,8 @@ DCM
 |    ├─── D                           # time bin decimation       (usually 1 or 2)??
 ├─── Lpos
 ├─── Sname: {'S1', 'S2, ... }                         # source names
-├─── A: {[n×n double]  [n×n double]  [n×n double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling the activity of three channels??
-├─── C:n×0 empty sparse double matrix # binary constraints on the regions which receive external input. In this case, we are collecting resting-state data, hence the zero.
+├─── A: {[m×m double]  [m×m double]  [m×m double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling the activity of three channels??
+├─── C:m×0 empty sparse double matrix # binary constraints on the regions which receive external input. In this case, we are collecting resting-state data, hence the zero.
 ├─── B                                # binary constraints on the modulatory connections for each of the m conditions.
 ├─── xU                               # design
 |    ├─── X
