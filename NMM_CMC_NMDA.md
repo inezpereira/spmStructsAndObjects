@@ -6,29 +6,29 @@ This set of parameters needs to appear in the priors and constitutes, for instan
 ```
 Ep
 ├─── S # population variance
-├─── T: [n×3 double] # rate constants for AMPA, GABA and NMDA channels
+├─── T: [n×3 double]                # rate constants for AMPA, GABA and NMDA channels
 ├─── G # intrinsic connectivity
-├─── GN_intrin: [n×1 double] # input scale to NMDA for each of the n sources. Pyramidal NMDA?? Superficial/deep?
-├─── GA_intrin: [n×1 double] # input scale to AMPA for each of the n sources.
-├─── GG_intrin: [n×1 double] # input scale to GABA for each of the n sources.
-├─── GNi_intrin: [n×1 double] # input scale to interneurons NMDA
-├─── GAi_intrin: [n×1 double] # Mg-switch sigmoid scale, slope and sensitivity 
-├─── GGi_intrin: [n×1 double] # input scale to GABA for each of the n sources
-├─── CV: [1×n double] # membrane capacitance for all n sources
-├─── E # background noise
-├─── A # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
-├─── AN # extrinsic connections for NMDA (same shape as A)
-├─── C # subcortical input
-├─── H # intrinsic connectivity. Unused?
-├─── R # onset and dispersion.
-├─── D # delays (unused)
-├─── Lpos # ROIs (unused)
-├─── L # leadfield
-├─── J # contributing states
-├─── a # neuronal innovations?
-├─── b # channel noise (not source-specific)??
-├─── c # channel noise (source-specific)??
-├─── d # channel noise (basis set coefficients)??
+├─── GN_intrin: [n×1 double]        # input scale to NMDA for each of the n sources. Pyramidal NMDA?? Superficial/deep?
+├─── GA_intrin: [n×1 double]        # input scale to AMPA for each of the n sources.
+├─── GG_intrin: [n×1 double]        # input scale to GABA for each of the n sources.
+├─── GNi_intrin: [n×1 double]       # input scale to interneurons NMDA
+├─── GAi_intrin: [n×1 double]       # Mg-switch sigmoid scale, slope and sensitivity 
+├─── GGi_intrin: [n×1 double]       # input scale to GABA for each of the n sources
+├─── CV: [1×n double]               # membrane capacitance for all n sources
+├─── E                              # background noise
+├─── A                              # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
+├─── AN                             # extrinsic connections for NMDA (same shape as A)
+├─── C                              # subcortical input
+├─── H                              # intrinsic connectivity. Unused?
+├─── R                              # onset and dispersion.
+├─── D                              # delays (unused)
+├─── Lpos                           # ROIs (unused)
+├─── L                              # leadfield
+├─── J                              # contributing states
+├─── a                              # neuronal innovations?
+├─── b                              # channel noise (not source-specific)??
+├─── c                              # channel noise (source-specific)??
+├─── d                              # channel noise (basis set coefficients)??
 ```
 
 ```
