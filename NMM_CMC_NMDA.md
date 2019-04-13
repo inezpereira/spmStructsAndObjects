@@ -8,8 +8,8 @@ This set of parameters needs to appear in the priors and constitutes, for instan
 ```
 Ep
 ├─── S                              # population variance.
-├─── T: [m×3 double]                # time constants for AMPA, GABA and NMDA channels
-├─── G                              # intrinsic connectivity
+├─── T: [m×3 double]                # time constants for AMPA, GABA and NMDA channels. One row for each source. 
+├─── G                              # intrinsic connectivity. Meaning within source?
 ├─── GN_intrin: [m×1 double]        # input scale to NMDA for each of the m sources. Pyramidal NMDA?? Superficial/deep?
 ├─── GA_intrin: [m×1 double]        # input scale to AMPA for each of the m sources.
 ├─── GG_intrin: [m×1 double]        # input scale to GABA for each of the m sources.
@@ -18,8 +18,8 @@ Ep
 ├─── GGi_intrin: [m×1 double]       # input scale to GABA for each of the n sources
 ├─── CV: [1×m double]               # membrane capacitance for all n sources
 ├─── E                              # background noise
-├─── A                              # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
-├─── AN                             # extrinsic connections for NMDA (same shape as A)
+├─── A: 1×2 cell, each cell: mxm sparse double        # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
+├─── AN: 1×2 cell, each cell: mxm sparse double       # extrinsic connections for NMDA (same shape as A)
 ├─── C                              # subcortical input
 ├─── H                              # intrinsic connectivity. Unused? Synaptic densities?
 ├─── R                              # onset and dispersion
@@ -41,7 +41,7 @@ DCM
 |    |    ├─── model_definition
 |    ├─── pE                        # prior expectation
 |    |    ├─── model_definition
-|    ├─── Nmax
+|    ├─── Nmax                      # max number of iterations for the EM algorithm?
 |    ├─── dipfit                    # spatial model specification. Gives dipole structure??
 |    |    ├─── model: 'CMM_NMDA'
 |    |    ├─── type
@@ -152,7 +152,7 @@ DCM
 |    ├─── xy
 |    ├─── modality: 'EEG'
 |    ├─── name
-|    ├─── Ic
+|    ├─── Ic                                            # Good channel indices
 |    ├─── Time
 |    ├─── dt
 |    ├─── coord2D
@@ -177,7 +177,7 @@ DCM
 |    ├─── spatial: 'IMG'              # 'ECD', 'LFP' or 'IMG'     (see spm_erp_L)
 |    ├─── Tidcm                       # [start end] time window in ms
 |    ├─── Fdcm                        # [start end] Frequency window in Hz
-|    ├─── Nmodes                      # number of spatial modes???
+|    ├─── Nmodes                      # number of spatial modes??? Defined as 8 in spm_dcm_csd.m
 |    ├─── D                           # time bin decimation       (usually 1 or 2)??
 ├─── Lpos
 ├─── Sname: {'S1', 'S2, ... }                         # source names
@@ -201,7 +201,7 @@ DCM
 ├─── Hc                               # conditional responses (y), channel space. Model estimates for the generated data??
 ├─── Rc                               # conditional residuals (y), channel space. Residuals??
 ├─── Hs                               # conditional responses (y), source space
-├─── Ce                               # eML error covariance
+├─── Ce                               # ReML error covariance
 ├─── Ce_Eh
 ├─── F                                # Laplace log evidence
 ├─── ID                               # data ID
