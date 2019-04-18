@@ -7,30 +7,30 @@ This set of parameters needs to appear in the priors and constitutes, for instan
 
 ```
 Ep
-├─── S                              # population variance.
-├─── T: [m×3 double]                # time constants for AMPA, GABA and NMDA channels. One row for each source. 
-├─── G                              # intrinsic connectivity. Meaning within source?
-├─── GN_intrin: [m×1 double]        # input scale to NMDA for each of the m sources. Pyramidal NMDA?? Superficial/deep?
-├─── GA_intrin: [m×1 double]        # input scale to AMPA for each of the m sources.
-├─── GG_intrin: [m×1 double]        # input scale to GABA for each of the m sources.
-├─── GNi_intrin: [m×1 double]       # input scale to interneurons NMDA
-├─── GAi_intrin: [m×1 double]       # Mg-switch sigmoid scale, slope and sensitivity 
-├─── GGi_intrin: [m×1 double]       # input scale to GABA for each of the n sources
-├─── CV: [1×m double]               # membrane capacitance for all n sources
-├─── E                              # background noise
+├─── S                                                # population variance.
+├─── T: [m×3 double]                                  # time constants for AMPA, GABA and NMDA channels. One row for each source. 
+├─── G                                                # intrinsic connectivity. Meaning within source?
+├─── GN_intrin: [m×1 double]                          # input scale to NMDA for each of the m sources. Pyramidal NMDA?? Superficial/deep?
+├─── GA_intrin: [m×1 double]                          # input scale to AMPA for each of the m sources.
+├─── GG_intrin: [m×1 double]                          # input scale to GABA for each of the m sources.
+├─── GNi_intrin: [m×1 double]                         # input scale to interneurons NMDA
+├─── GAi_intrin: [m×1 double]                         # Mg-switch sigmoid scale, slope and sensitivity 
+├─── GGi_intrin: [m×1 double]                         # input scale to GABA for each of the n sources
+├─── CV: [1×m double]                                 # membrane capacitance for all n sources
+├─── E                                                # background noise
 ├─── A: 1×2 cell, each cell: mxm sparse double        # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
 ├─── AN: 1×2 cell, each cell: mxm sparse double       # extrinsic connections for NMDA (same shape as A)
-├─── C                              # subcortical input
-├─── H                              # intrinsic connectivity. Unused? Synaptic densities?
-├─── R                              # onset and dispersion
-├─── D                              # delays (unused)
-├─── Lpos                           # ROIs (unused)
-├─── L                              # leadfield
-├─── J                              # contributing states
-├─── a                              # neuronal innovations?
-├─── b                              # channel noise (not source-specific)??
-├─── c                              # channel noise (source-specific)??
-├─── d                              # channel noise (basis set coefficients)??
+├─── C                                                # subcortical input
+├─── H                                                # intrinsic connectivity. Unused? Synaptic densities?
+├─── R                                                # onset and dispersion
+├─── D                                                # delays (unused)
+├─── Lpos                                             # ROIs (unused)
+├─── L                                                # leadfield
+├─── J                                                # contributing states
+├─── a                                                # neuronal innovations?
+├─── b                                                # channel noise (not source-specific)??
+├─── c                                                # channel noise (source-specific)??
+├─── d                                                # channel noise (basis set coefficients)??
 ```
 
 And now, I give you the DCM struct:
