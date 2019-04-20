@@ -18,8 +18,8 @@ Ep
 ├─── GGi_intrin: [m×1 double]                         # input scale to GABA for each of the n sources
 ├─── CV: [1×m double]                                 # membrane capacitance for all n sources
 ├─── E                                                # background noise
-├─── A: 1×2 cell, each cell: mxm sparse double        # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
-├─── AN: 1×2 cell, each cell: mxm sparse double       # extrinsic connections for NMDA (same shape as A)
+├─── A: {1×2 cell}, each cell: mxm sparse double        # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
+├─── AN: {1×2 cell}, each cell: mxm sparse double       # extrinsic connections for NMDA (same shape as A)
 ├─── C                                                # subcortical input
 ├─── H                                                # intrinsic connectivity. Unused? Synaptic densities?
 ├─── R                                                # onset and dispersion
@@ -27,10 +27,10 @@ Ep
 ├─── Lpos                                             # ROIs (unused)
 ├─── L                                                # leadfield
 ├─── J                                                # contributing states
-├─── a                                                # neuronal innovations?
-├─── b                                                # channel noise (not source-specific)??
-├─── c                                                # channel noise (source-specific)??
-├─── d                                                # channel noise (basis set coefficients)??
+├─── a: [2×m double] sparse                           # neuronal innovations? Why these dimensions?
+├─── b: [2×1 double] sparse                           # channel noise (not source-specific)?? 2 channels?
+├─── c: [2×1 double] sparse                           # channel noise (source-specific)?? Why does it have the same first dimension as b?
+├─── d: [8×m double] sparse                           # channel noise (basis set coefficients)?? Why the 8?
 ```
 
 And now, I give you the DCM struct:
