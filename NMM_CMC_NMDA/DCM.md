@@ -121,14 +121,14 @@ DCM
 |    |    |    ├─── type
 |    |    |    ├─── unit: 'mm'
 |    |    |    ├─── chanpos
-|    |    ├─── siunits
-|    |    ├─── G
-|    |    ├─── U
-|    |    ├─── Ip
-|    |    ├─── radius
-|    |    ├─── Nm							# number of modes (Imaging)
-|    |    ├─── Nd
-|    |    ├─── gainmat
+|    |    ├─── siunits: false 				# ?? Boolean? What for?
+|    |    ├─── G: {1×m} cell, where each entry = L(:,Ip)*U	# L is the Lead-field or gain matrix L(:,Is)
+|    |    ├─── U: {1×m} cell					# singular vectors, output of spm_svd.m, which computes "computationally efficient SVD (that can handle sparse arguments)"	
+|    |    ├─── Ip: {1×m} cell					# ?? nearest mesh points??
+|    |    ├─── radius						# radius in mm of source?
+|    |    ├─── Nm							# number of modes per region
+|    |    ├─── Nd							# number of dipoles
+|    |    ├─── gainmat						# Lead field filename
 |    ├─── IS: 'spm_csd_mtf'                             # Spectral response of a NMM (transfer function x noise spectrum)
 |    ├─── FS 
 |    ├─── g: 'spm_gx_erp'                               # observer for a neural mass model of event related potentials. Unused?
@@ -186,7 +186,7 @@ DCM
 ├─── B                                # binary constraints on the modulatory connections for each of the m conditions.
 ├─── xU: [1x1 struct]                              # design
 |    ├─── X
-├─── val
+├─── val							   # ??
 ├─── dtf                              # directed transfer functions (source space)
 ├─── ccf                              # cross covariance functions (source space)
 ├─── coh                              # cross coherence functions (source space)
