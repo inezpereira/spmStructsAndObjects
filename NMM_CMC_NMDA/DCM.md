@@ -23,7 +23,7 @@ Ep
 ├─── C                                                # subcortical input
 ├─── H                                                # intrinsic connectivity. Unused? Synaptic densities?
 ├─── R                                                # onset and dispersion
-├─── D                                                # delays (unused)
+├─── D                                                # delays
 ├─── Lpos                                             # ROIs (unused)
 ├─── L                                                # leadfield
 ├─── J                                                # contributing states
@@ -44,16 +44,16 @@ DCM
 |    ├─── Nmax                      # max number of iterations for the EM algorithm?
 |    ├─── dipfit                    # spatial model specification. Gives dipole structure??
 |    |    ├─── model: 'CMM_NMDA'
-|    |    ├─── type
-|    |    ├─── Ic
-|    |    ├─── location
-|    |    ├─── symmetry
-|    |    ├─── Lpos
-|    |    ├─── modality
-|    |    ├─── Ns
-|    |    ├─── Nc
+|    |    ├─── type					# 'ECD', 'LFP' or 'IMG' (Same as DCM.options.spatial)
+|    |    ├─── Ic					# Good channel indices
+|    |    ├─── location				# 0 or 1 for source location priors (spm_dcm_erp_dipfit.m)
+|    |    ├─── symmetry				# 0 or 1 for symmetry constraints on sources (spm_dcm_erp_dipfit.m)
+|    |    ├─── Lpos					# x,y,z source positions (mm) (ECD)
+|    |    ├─── modality				# 'EEG', 'MEG', 'MEGPLANAR' or 'LFP' 
+|    |    ├─── Ns					# number of sources (spm_dcm_erp_dipfit.m)
+|    |    ├─── Nc					# number of good channels
 |    |    ├─── silent_source
-|    |    ├─── vol
+|    |    ├─── vol					# volume structure (for M/EEG). Basically head model?
 |    |    |    ├─── bnd
 |    |    |    |    ├─── pos
 |    |    |    |    ├─── tri
@@ -90,7 +90,7 @@ DCM
 |    |    |    ├─── skin_surface
 |    |    |    ├─── inner_skull_surface
 |    |    |    ├─── source
-|    |    ├─── datareg
+|    |    ├─── datareg						# registration structure (for M/EEG)
 |    |    |    ├─── sensors
 |    |    |    |    ├─── chanpos
 |    |    |    |    ├─── elecpos
@@ -112,7 +112,7 @@ DCM
 |    |    |    |    ├─── unit:'mm'
 |    |    |    ├─── toMNI
 |    |    |    ├─── fromMNI
-|    |    |    ├─── modality: 'EEG'
+|    |    |    ├─── modality					# Same as DCM.M.dipfit.modality
 |    |    ├─── sens
 |    |    |    ├─── chantype
 |    |    |    ├─── chanunit: {'V', ... , 'V'}
@@ -126,7 +126,7 @@ DCM
 |    |    ├─── U
 |    |    ├─── Ip
 |    |    ├─── radius
-|    |    ├─── Nm
+|    |    ├─── Nm							# number of modes (Imaging)
 |    |    ├─── Nd
 |    |    ├─── gainmat
 |    ├─── IS: 'spm_csd_mtf'                             # Spectral response of a NMM (transfer function x noise spectrum)
@@ -148,21 +148,21 @@ DCM
 ├─── name: '<name of DCM file>'
 ├─── xY: [1x1 struct]                                   # data
 |    ├─── Dfile: '<path/to/preprocessed/EEG/data>'
-|    ├─── y
+|    ├─── y									# ??? Still don't get this one, after looking at spm_dcm 
 |    ├─── xy
 |    ├─── modality: 'EEG'
-|    ├─── name
-|    ├─── Ic                                            # Good channel indices
-|    ├─── Time
-|    ├─── dt
-|    ├─── coord2D
-|    ├─── pst
-|    ├─── It
-|    ├─── nt
-|    ├─── code
-|    ├─── scale
-|    ├─── X0
-|    ├─── R
+|    ├─── name								# channel names (see spm_dcm_erp_data.m)
+|    ├─── Ic                             	# Good channel indices
+|    ├─── Time								# PST (ms) --> peristimulus time?
+|    ├─── dt								# time bins=1/sampling_rate from the MEEG objected containing the data
+|    ├─── coord2D							# x and y topographic coordinates of channels in 2D plane
+|    ├─── pst								# Down-sampled PST
+|    ├─── It								# Indices of time bins
+|    ├─── nt								# Length of vector of trial indices based on condition labels (length of nt is equal to the number of conditions)
+|    ├─── code								# ?? In my model: 'Undefined'
+|    ├─── scale								# ?? In my model: 1
+|    ├─── X0								# Basis functions for Discrete Cosine Transform. But for what?
+|    ├─── R: = speye(Ns) - X0*X0'
 |    ├─── Hz
 |    ├─── csd
 |    ├─── orig_data_size
@@ -171,20 +171,20 @@ DCM
 |    ├─── U
 |    ├─── Q
 ├─── options
-|    ├─── trials
-|    ├─── analysis: 'CSD'
+|    ├─── trials					   # 1 if resting state EEG.
+|    ├─── analysis: 'CSD'			   # type of analysis run??
 |    ├─── model: 'CMM_NMDA'           # 'ERP', 'SEP', 'CMC', 'LFP', 'NMM' or 'MFM'
 |    ├─── spatial: 'IMG'              # 'ECD', 'LFP' or 'IMG'     (see spm_erp_L)
 |    ├─── Tidcm                       # [start end] time window in ms
 |    ├─── Fdcm                        # [start end] Frequency window in Hz
 |    ├─── Nmodes                      # number of spatial modes??? Defined as 8 in spm_dcm_csd.m
 |    ├─── D                           # time bin decimation       (usually 1 or 2)??
-├─── Lpos
+├─── Lpos: [3×m double]				   # MNI coordinates for the m regions of interest (ROI)						
 ├─── Sname: {'S1', 'S2, ... }                         # source names
-├─── A: {[m×m double]  [m×m double]  [m×m double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling the activity of three channels??
+├─── A: {[m×m double]  [m×m double]  [m×m double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling forward, backward and lateral connections??
 ├─── C:m×0 empty sparse double matrix # binary constraints on the regions which receive external input. In this case, we are collecting resting-state data, hence the zero.
 ├─── B                                # binary constraints on the modulatory connections for each of the m conditions.
-├─── xU                               # design
+├─── xU: [1x1 struct]                              # design
 |    ├─── X
 ├─── val
 ├─── dtf                              # directed transfer functions (source space)
@@ -192,16 +192,16 @@ DCM
 ├─── coh                              # cross coherence functions (source space)
 ├─── fsd                              # specific delay functions (source space)
 ├─── pst                              # peristimulus time
-├─── Hz                               # frequency (vector with integer valuesof the analyzed frequency spectrum, e.g. if 2-10 Hz, then DCM.Hz is the same as the vector [2:10].
+├─── Hz                               # frequency (vector with integer values of the analyzed frequency spectrum, e.g. if 2-10 Hz, then DCM.Hz is the same as the vector [2:10].
 ├─── Ep                               # conditional expectation. Meaning your posterior estimates of the model parameters??
 |    ├─── model_definition
 ├─── Cp                               # conditional covariance. posterior covariance matrices??
 ├─── Pp                               # conditional probability. posterior probability of each parameter??
 |    ├─── model_definition
-├─── Hc                               # conditional responses (y), channel space. Model estimates for the generated data??
+├─── Hc                               # conditional responses (y), channel space. Model estimates for the generated data.
 ├─── Rc                               # conditional residuals (y), channel space. Residuals??
 ├─── Hs                               # conditional responses (y), source space
-├─── Ce                               # ReML error covariance
+├─── Ce                               # eML error covariance. eML = extended maximum likelihood??
 ├─── Ce_Eh
 ├─── F                                # Laplace log evidence
 ├─── ID                               # data ID
@@ -210,6 +210,10 @@ DCM
 
 ## Resources:
 - [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m)
+	1. **Definition of spatial model**
+		- Calls to prepare structures for forward model: [spm_dcm_erp_data.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_erp_data.m)
+		- Calls to prepare structures for ECD forward model (EEG, MEG and LFP): [spm_dcm_erp_dipfit.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_erp_dipfit.m)
+	1. 
 - [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m)
   - Because priors are specified under log normal assumptions, most parameters are simply scaling coefficients with a prior expectation and variance of one.  After log transform this renders `pE = 0` and `pC = 1`;
   - Defines prior moments on the parameters with [spm_cmc_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmc_priors.m) or accepts user input.
