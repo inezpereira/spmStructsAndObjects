@@ -129,7 +129,7 @@ DCM
 |    |    ├─── Nm							# number of modes per region
 |    |    ├─── Nd							# number of dipoles
 |    |    ├─── gainmat						# Lead field filename
-|    ├─── IS: 'spm_csd_mtf'                             # Spectral response of a NMM (transfer function x noise spectrum). function name f(P,M,U) - generative model. This function specifies the nonlinear model: y = Y.y = IS(P,M,U) + X0*P0 + e, where e ~ N(0,C). (spm_nlsi_GN.m)
+|    ├─── IS: 'spm_csd_mtf'                # Spectral response of a NMM (transfer function x noise spectrum). function name f(P,M,U) - generative model. This function specifies the nonlinear model: y = Y.y = IS(P,M,U) + X0*P0 + e, where e ~ N(0,C). (spm_nlsi_GN.m). It is also an integrator?? ()
 |    ├─── FS 								# function name f(y,M), feature selection. This [optional] function performs feature selection assuming the generalized model y = FS(y,M) = FS(IS(P,M,U),M) + X0*P0 + e (spm_nlsi_GN.m)
 |    ├─── g: 'spm_gx_erp'                               # observer for a neural mass model of event related potentials. Unused?
 |    ├─── f: 'spm_fx_cmm_NMDA'                          # calls state equations of motion for canonical neural-mass and mean-field models 
