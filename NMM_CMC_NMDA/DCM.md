@@ -37,7 +37,7 @@ And now, I give you the DCM struct:
 ```
 DCM
 ├─── M								 # 'M' for 'model'?
-|    ├─── P                         # model parameters
+|    ├─── P                         # model parameters. Starting estimates for model parameters [optional] (spm_nlsi_GN.m). Basically taken from pE.
 |    |    ├─── model_definition
 |    ├─── pE                        # prior expectation
 |    |    ├─── model_definition
@@ -129,18 +129,18 @@ DCM
 |    |    ├─── Nm							# number of modes per region
 |    |    ├─── Nd							# number of dipoles
 |    |    ├─── gainmat						# Lead field filename
-|    ├─── IS: 'spm_csd_mtf'                             # Spectral response of a NMM (transfer function x noise spectrum)
-|    ├─── FS 
+|    ├─── IS: 'spm_csd_mtf'                             # Spectral response of a NMM (transfer function x noise spectrum). function name f(P,M,U) - generative model. This function specifies the nonlinear model: y = Y.y = IS(P,M,U) + X0*P0 + e, where e ~ N(0,C). (spm_nlsi_GN.m)
+|    ├─── FS 								# function name f(y,M), feature selection. This [optional] function performs feature selection assuming the generalized model y = FS(y,M) = FS(IS(P,M,U),M) + X0*P0 + e (spm_nlsi_GN.m)
 |    ├─── g: 'spm_gx_erp'                               # observer for a neural mass model of event related potentials. Unused?
 |    ├─── f: 'spm_fx_cmm_NMDA'                          # calls state equations of motion for canonical neural-mass and mean-field models 
 |    ├─── x                                             # neural states. Initialized as zero sparse matrix.
 |    ├─── n                                             # total number of neural states. Defined as length(spm_vec(DCM.M.x))
 |    ├─── pC                                            # prior (co)variances
 |    |   ├─── model_definition
-|    ├─── hE                                            # prespecified as 8 or 6? Why? What does this represent?
+|    ├─── hE                                            # prespecified as 8 or 6? Why? What does this represent? conditional log-precisions E{h|y} (spm_nlsi_GN.m)
 |    ├─── hC                                            # prespecified as 1/128 or 1/64? Why? What does this represent?
 |    ├─── m                                             # number of sources
-|    ├─── u: sparse(m,1)						# 
+|    ├─── u: sparse(m,1)						# inputs or causes
 |    ├─── U									# channel eigenmodes
 |    ├─── l = DCM.options.Nmodes
 |    ├─── Hz = DCM.xY.Hz						# Frequencies over which we are inverting.
@@ -161,7 +161,7 @@ DCM
 |    ├─── nt								# Length of vector of trial indices based on condition labels (length of nt is equal to the number of conditions)
 |    ├─── code								# ?? In my model: 'Undefined'. Trial codes evaluated (spm_dcm_csd_data.m)
 |    ├─── scale								# ?? In my model: 1
-|    ├─── X0								# Basis functions for Discrete Cosine Transform. But for what?
+|    ├─── X0								# Basis functions for Discrete Cosine Transform. But for what? In spm_nlsi_GN.m, this is documented as confounds or null space.
 |    ├─── R: = speye(Ns) - X0*X0'
 |    ├─── Hz								# Frequency bins
 |    ├─── csd								# cross spectral density over sources
@@ -169,7 +169,7 @@ DCM
 |    ├─── inds_used_size2
 |    ├─── csd_per_trial
 |    ├─── U									# channel subspace
-|    ├─── Q
+|    ├─── Q									# q error precision components
 ├─── options
 |    ├─── trials					   # trial to evaluate; 1 if resting state EEG.
 |    ├─── analysis: 'CSD'			   # type of analysis run??
@@ -193,9 +193,9 @@ DCM
 ├─── fsd                              # specific delay functions (source space)
 ├─── pst                              # peristimulus time
 ├─── Hz                               # frequency (vector with integer values of the analyzed frequency spectrum, e.g. if 2-10 Hz, then DCM.Hz is the same as the vector [2:10].
-├─── Ep                               # conditional expectation. Meaning your posterior estimates of the model parameters??
+├─── Ep                               # conditional expectation E{P|y}. Meaning your posterior estimates of the model parameters??
 |    ├─── model_definition
-├─── Cp                               # conditional covariance. posterior covariance matrices??
+├─── Cp                               # conditional covariance Cov{P|y}. posterior covariance matrices??
 ├─── Pp                               # conditional probability. posterior probability of each parameter??
 |    ├─── model_definition
 ├─── Hc                               # conditional responses (y), channel space. Model estimates for the generated data.
@@ -203,13 +203,13 @@ DCM
 ├─── Hs                               # conditional responses (y), source space
 ├─── Ce                               # eML error covariance. eML = extended maximum likelihood??
 ├─── Ce_Eh
-├─── F                                # Laplace log evidence
+├─── F                                # Laplace log evidence. [-ve] free energy F = log evidence = p(y|f,g,pE,pC) = p(y|m) (spm_nlsi_GN.m)
 ├─── ID                               # data ID
 
 ```
 
 ## Resources:
-- [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m)
+- Going through [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m)
 	1. **Definition of spatial model**
 		- Calls to prepare structures for forward model: [spm_dcm_erp_data.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_erp_data.m)
 		- Calls to prepare structures for ECD forward model (EEG, MEG and LFP): [spm_dcm_erp_dipfit.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_erp_dipfit.m)
@@ -220,7 +220,9 @@ DCM
 	1. **Definition of initial states and equations of motion**: 
 		- Calls: [spm_dcm_x_neural.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_x_neural.m). According to the type of model, different functions will be called. For instance, a `CM_NMDA` model will call [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m)
 	1. **Extraction of channel eigenmodes**: [spm_dcm_eeg_channelmodes.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_eeg_channelmodes.m)
-	1. **Gets cross-spectral density data-features** using a VAR model: [spm_dcm_csd_data.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd_data.m)
+	1. **Gets cross-spectral density data-features** using a VAR model: [spm_dcm_csd_data.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd_data.m), which sets a lot of fields of DCM.xY.
+	1. **Model inversion**: [spm_nlsi_GN.m](https://github.com/spm/spm12/blob/master/spm_nlsi_GN.m).
+
 
 - [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m)
   - Defines prior moments on the parameters with [spm_cmc_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmc_priors.m) or accepts user input.
