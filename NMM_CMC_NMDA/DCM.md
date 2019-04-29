@@ -7,7 +7,7 @@ This set of parameters needs to appear in the priors and constitutes, for instan
 
 ```
 Ep
-├─── S                                                # population variance.
+├─── S                                                # population variance?? activation function parameters (spm_dcm_neural_priors.m)??
 ├─── T: [m×3 double]                                  # time constants for AMPA, GABA and NMDA channels. One row for each source. 
 ├─── G                                                # intrinsic connectivity. Meaning within source?
 ├─── GN_intrin: [m×1 double]                          # input scale to NMDA for each of the m sources. Pyramidal NMDA?? Superficial/deep?
@@ -21,12 +21,12 @@ Ep
 ├─── A: {1×2 cell}, each cell: mxm sparse double        # extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from)
 ├─── AN: {1×2 cell}, each cell: mxm sparse double       # extrinsic connections for NMDA (same shape as A)
 ├─── C                                                # subcortical input
-├─── H                                                # intrinsic connectivity. Unused? Synaptic densities?
+├─── H                                                # intrinsic connectivity. Unused? Synaptic densities (spm_dcm_neural_priors.m)?
 ├─── R                                                # onset and dispersion
 ├─── D                                                # delays
 ├─── Lpos                                             # ROIs (unused)
-├─── L                                                # leadfield
-├─── J                                                # contributing states
+├─── L                                                # leadfield: orientation for ECD, coefficients of local modes for Imaging, gain of electrodes for LFP
+├─── J                                                # contributing states (length(J) = number of states per source) (spm_L_priors.m)
 ├─── a: [2×m double] sparse                           # neuronal innovations? Why these dimensions?
 ├─── b: [2×1 double] sparse                           # channel noise (not source-specific)?? 2 channels?
 ├─── c: [2×1 double] sparse                           # channel noise (source-specific)?? Why does it have the same first dimension as b?
@@ -36,22 +36,22 @@ Ep
 And now, I give you the DCM struct:
 ```
 DCM
-├─── M
+├─── M								 # 'M' for 'model'?
 |    ├─── P                         # model parameters
 |    |    ├─── model_definition
 |    ├─── pE                        # prior expectation
 |    |    ├─── model_definition
 |    ├─── Nmax                      # max number of iterations for the EM algorithm?
-|    ├─── dipfit                    # spatial model specification. Gives dipole structure??
+|    ├─── dipfit                    # spatial model specification. Gives dipole structure?? Basically lead-field parameters??
 |    |    ├─── model: 'CMM_NMDA'
 |    |    ├─── type					# 'ECD', 'LFP' or 'IMG' (Same as DCM.options.spatial)
 |    |    ├─── Ic					# Good channel indices
-|    |    ├─── location				# 0 or 1 for source location priors (spm_dcm_erp_dipfit.m)
-|    |    ├─── symmetry				# 0 or 1 for symmetry constraints on sources (spm_dcm_erp_dipfit.m)
+|    |    ├─── location				# 0 or 1 (spm_dcm_erp_dipfit.m): allow changes in source location (ECD) (spm_L_priors.m)
+|    |    ├─── symmetry				# 0 or 1 for symmetry constraints on sources (spm_dcm_erp_dipfit.m). distance (mm) for symmetry constraints (ECD) (spm_L_priors.m)
 |    |    ├─── Lpos					# x,y,z source positions (mm) (ECD)
 |    |    ├─── modality				# 'EEG', 'MEG', 'MEGPLANAR' or 'LFP' 
-|    |    ├─── Ns					# number of sources (spm_dcm_erp_dipfit.m)
-|    |    ├─── Nc					# number of good channels
+|    |    ├─── Ns					# number of sources (spm_dcm_erp_dipfit.m and spm_L_priors.m)
+|    |    ├─── Nc					# number of good channels (spm_L_priors.m)
 |    |    ├─── silent_source
 |    |    ├─── vol					# volume structure (for M/EEG). Basically head model?
 |    |    |    ├─── bnd
@@ -123,7 +123,7 @@ DCM
 |    |    |    ├─── chanpos
 |    |    ├─── siunits: false 				# ?? Boolean? What for?
 |    |    ├─── G: {1×m} cell, where each entry = L(:,Ip)*U	# L is the Lead-field or gain matrix L(:,Is)
-|    |    ├─── U: {1×m} cell					# singular vectors, output of spm_svd.m, which computes "computationally efficient SVD (that can handle sparse arguments)"	
+|    |    ├─── U: {1×m} cell					# singular vectors, output of spm_svd.m, which computes "computationally efficient SVD (that can handle sparse arguments)". channel eigenmodes, U is scaled to ensure trace(U'*L*L'*U) = Nm (spm_dcm_eeg_channelmodes.m). Channel subspace (spm_dcm_csd_data.m)
 |    |    ├─── Ip: {1×m} cell					# ?? nearest mesh points??
 |    |    ├─── radius						# radius in mm of source?
 |    |    ├─── Nm							# number of modes per region
@@ -137,10 +137,10 @@ DCM
 |    ├─── n                                             # total number of neural states. Defined as length(spm_vec(DCM.M.x))
 |    ├─── pC                                            # prior (co)variances
 |    |   ├─── model_definition
-|    ├─── hE                                            # prespecified as 8? Why? What does this represent?
-|    ├─── hC                                            # prespecified as 1/128? Why? What does this represent?
+|    ├─── hE                                            # prespecified as 8 or 6? Why? What does this represent?
+|    ├─── hC                                            # prespecified as 1/128 or 1/64? Why? What does this represent?
 |    ├─── m                                             # number of sources
-|    ├─── u
+|    ├─── u: sparse(m,1)						# 
 |    ├─── U
 |    ├─── l
 |    ├─── Hz
@@ -182,8 +182,8 @@ DCM
 ├─── Lpos: [3×m double]				   # MNI coordinates for the m regions of interest (ROI)						
 ├─── Sname: {'S1', 'S2, ... }                         # source names
 ├─── A: {[m×m double]  [m×m double]  [m×m double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling forward, backward and lateral connections??
-├─── C:m×0 empty sparse double matrix # binary constraints on the regions which receive external input. In this case, we are collecting resting-state data, hence the zero.
-├─── B                                # binary constraints on the modulatory connections for each of the m conditions.
+├─── C:n×0 empty sparse double matrix # binary constraints on the regions which receive external input. In my case, we are collecting resting-state data, hence we have an empty field here. n is the number of conditions.
+├─── B                                # binary constraints on the modulatory connections for each of the m conditions. Can also be empty.
 ├─── xU: [1x1 struct]                              # design
 |    ├─── X
 ├─── val							   # ??
