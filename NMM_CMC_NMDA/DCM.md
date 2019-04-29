@@ -141,44 +141,44 @@ DCM
 |    ├─── hC                                            # prespecified as 1/128 or 1/64? Why? What does this represent?
 |    ├─── m                                             # number of sources
 |    ├─── u: sparse(m,1)						# 
-|    ├─── U
-|    ├─── l
-|    ├─── Hz
-|    ├─── dt
+|    ├─── U									# channel eigenmodes
+|    ├─── l = DCM.options.Nmodes
+|    ├─── Hz = DCM.xY.Hz						# Frequencies over which we are inverting.
+|    ├─── dt = DCM.xY.dt
 ├─── name: '<name of DCM file>'
 ├─── xY: [1x1 struct]                                   # data
 |    ├─── Dfile: '<path/to/preprocessed/EEG/data>'
-|    ├─── y									# ??? Still don't get this one, after looking at spm_dcm 
+|    ├─── y									# Same as DCM.xY.csd in my case. If using CSD data, is this always equal to DCM.xY.csd?
 |    ├─── xy
 |    ├─── modality: 'EEG'
 |    ├─── name								# channel names (see spm_dcm_erp_data.m)
 |    ├─── Ic                             	# Good channel indices
 |    ├─── Time								# PST (ms) --> peristimulus time?
-|    ├─── dt								# time bins=1/sampling_rate from the MEEG objected containing the data
+|    ├─── dt								# time bins=1/sampling_rate from the MEEG objected containing the data. Sampling in seconds [s] (down-sampled) (spm_dcm_csd_data.m)
 |    ├─── coord2D							# x and y topographic coordinates of channels in 2D plane
-|    ├─── pst								# Down-sampled PST
+|    ├─── pst								# Down-sampled PST (Peristimulus Time [ms])
 |    ├─── It								# Indices of time bins
 |    ├─── nt								# Length of vector of trial indices based on condition labels (length of nt is equal to the number of conditions)
-|    ├─── code								# ?? In my model: 'Undefined'
+|    ├─── code								# ?? In my model: 'Undefined'. Trial codes evaluated (spm_dcm_csd_data.m)
 |    ├─── scale								# ?? In my model: 1
 |    ├─── X0								# Basis functions for Discrete Cosine Transform. But for what?
 |    ├─── R: = speye(Ns) - X0*X0'
-|    ├─── Hz
-|    ├─── csd
+|    ├─── Hz								# Frequency bins
+|    ├─── csd								# cross spectral density over sources
 |    ├─── orig_data_size
 |    ├─── inds_used_size2
 |    ├─── csd_per_trial
-|    ├─── U
+|    ├─── U									# channel subspace
 |    ├─── Q
 ├─── options
-|    ├─── trials					   # 1 if resting state EEG.
+|    ├─── trials					   # trial to evaluate; 1 if resting state EEG.
 |    ├─── analysis: 'CSD'			   # type of analysis run??
 |    ├─── model: 'CMM_NMDA'           # 'ERP', 'SEP', 'CMC', 'LFP', 'NMM' or 'MFM'
 |    ├─── spatial: 'IMG'              # 'ECD', 'LFP' or 'IMG'     (see spm_erp_L)
 |    ├─── Tidcm                       # [start end] time window in ms
 |    ├─── Fdcm                        # [start end] Frequency window in Hz
 |    ├─── Nmodes                      # number of spatial modes??? Defined as 8 in spm_dcm_csd.m
-|    ├─── D                           # time bin decimation       (usually 1 or 2)??
+|    ├─── D                           # time bin decimation (usually 1 or 2)?? Down-sampling (spm_dcm_csd_data.m)
 ├─── Lpos: [3×m double]				   # MNI coordinates for the m regions of interest (ROI)						
 ├─── Sname: {'S1', 'S2, ... }                         # source names
 ├─── A: {[m×m double]  [m×m double]  [m×m double]}    # binary constraints on the extrinsic (between source) connections. 3 cell entries because I am modelling forward, backward and lateral connections??
@@ -213,11 +213,20 @@ DCM
 	1. **Definition of spatial model**
 		- Calls to prepare structures for forward model: [spm_dcm_erp_data.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_erp_data.m)
 		- Calls to prepare structures for ECD forward model (EEG, MEG and LFP): [spm_dcm_erp_dipfit.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_erp_dipfit.m)
-	1. 
+	1. **Definition of priors**: use SPM default priors or priors pre-specified by user.
+		- Priors for NMM: [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m). Several cases are considered in this script. For example, if the model defined is a CMM_NMDA, the script [spm_cmm_NMDA_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m) is called.
+  		- Priors for spatial model: [spm_L_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_L_priors.m). Parameters for electromagnetic forward model are based on the `DCM.dipfit.type` ('ECD', 'LFP' or 'IMG'). The contributing states (encoded in pE.J and pC.J) will depend on `DCM.dipfit.model`.
+		- Priors on endogenous inputs (neuronal) and noise: [spm_ssr_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m)
+	1. **Definition of initial states and equations of motion**: 
+		- Calls: [spm_dcm_x_neural.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_x_neural.m). According to the type of model, different functions will be called. For instance, a `CM_NMDA` model will call [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m)
+	1. **Extraction of channel eigenmodes**: [spm_dcm_eeg_channelmodes.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_eeg_channelmodes.m)
+	1. **Gets cross-spectral density data-features** using a VAR model: [spm_dcm_csd_data.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd_data.m)
+
 - [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m)
-  - Because priors are specified under log normal assumptions, most parameters are simply scaling coefficients with a prior expectation and variance of one.  After log transform this renders `pE = 0` and `pC = 1`;
   - Defines prior moments on the parameters with [spm_cmc_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmc_priors.m) or accepts user input.
-  - Defines priors on the spatial model with [spm_L_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_L_priors.m) or accepts user input.
+
+
+
   - Defines initial states and equations of motion with [spm_dcm_x_neural.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_x_neural.m)
   - Defines initial states and equations of motion through [spm_dcm_csd.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_csd.m).
 - [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m)
