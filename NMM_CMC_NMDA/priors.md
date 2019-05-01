@@ -7,11 +7,13 @@
 
 I will use common Matlab functions to more concisely express what the parameters are.
 
-An note present in the script [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m): "*Because priors are specified under log normal assumptions, most parameters are simply scaling coefficients with a prior expectation and variance of one.  After log transform this renders pE = 0 and pC = 1*."
+A note present in the script [spm_dcm_neural_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_dcm_neural_priors.m): "*Because priors are specified under log normal assumptions, most parameters are simply scaling coefficients with a prior expectation and variance of one.  After log transform this renders pE = 0 and pC = 1*."
+
+Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m). There you will see how the prior values you specify are integrated in the model.
 
 ## Prior Expectation
 
-| Field  | Meaning | Value  | Questions or comments| Script with documentation about variable
+| Field  | Meaning | Value  | Questions or comments| Script with documentation about variable / Script where use of variable becomes clear
 |:----------|:----------|:----------|:----------|:----------|
 | S    | population variance | 0   | 
 | T   |time constants for AMPA, GABA and NMDA channels. One row for each source.  | `zeros(m,3)`   | 
