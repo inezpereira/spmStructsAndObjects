@@ -30,7 +30,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | AN | extrinsic connections for NMDA (same shape as A) | idem | idem|
 | C | subcortical input | `[]` | If dealing with resting-state EEG.
 | H | intrinsic connectivity. | `zeros(p, p, m)`| Unused? Synaptic densities? Rows and columns for one source: **1** - excitatory spiny stellate cells (granular input cells); **2** - superficial pyramidal cells     (forward  output cells); **3** - inhibitory interneurons (intrisic interneuons); **4** - deep pyramidal cells (backward output cells)
-| R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | ecause `u-0`, in my case. Actual meaning?
+| R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | because `u=0`, in my case. Actual meaning?
 | D | delays (unused) | `zeros(m, m)`| Why unused? Why this value?
 | Lpos | ROIs (unused) | `sparse(3,0)` | Why unused? When is it used?
 | L | leadfield | `zeros(Nc,m)`|
