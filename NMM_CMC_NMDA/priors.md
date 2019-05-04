@@ -34,7 +34,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | D | delays (unused) | `zeros(m, m)`| Why unused? Why this value?
 | Lpos | ROIs (unused) | `sparse(3,0)` | Why unused? When is it used?
 | L | leadfield | `zeros(Nc,m)`|
-| J | contributing states |`zeros(1,16)`, expect for `(1,2)=1`| What is this?
+| J | contributing states |`zeros(1,16)`, except for `(1,2)=1`| What is this?
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| What is this, really? Why these dimensions?
 |b | channel noise (not source-specific, amplitude and exponent)  |`zeros(2,1)`| 2 channels?
 |c | channel noise (source-specific, amplitude and exponent) |`zeros(2,1)`| Understand dimensions. This 1 in my model is only one because `size(pE.L,1) ~= 1`, meaning, I had more than one channel (https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L42)| (spm_ssr_priors.m#L42)[spm_ssr_priors.m#L49](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L49)
