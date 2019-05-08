@@ -15,8 +15,8 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 
 | Field  | Meaning | Value  | Questions or comments| Script with documentation about variable / Script where use of variable becomes clear
 |:----------|:----------|:----------|:----------|:----------|
-| S    | population variance | 0   | 
-| T   |time constants for AMPA, GABA and NMDA channels. One row for each source.  | `zeros(m,3)`   | 
+| S    | population variance | 0   | | Exponentation here: [spm_fx_cmm_NMDA.m#L153](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L153)
+| T   |time constants for AMPA, GABA and NMDA channels. One row for each source.  | `zeros(m,3)`   | | Exponentation here [spm_fx_cmm_NMDA.m#L132-L134](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L132-L134)
 | G | intrinsic connectivity |`zeros(m,1)` | Why one value per source? What does this represent really?|
 | GN_intrin | input scale to NMDA for each of the m sources. | `zeros(m,1)` | Same parameters for all cells containing NMDA receptor? Or just for pyramidal cells? (see the paramters with "i")|
 | GA_intrin | input scale to AMPA for each of the m sources |  `zeros(m,1)` | Idem|
@@ -24,12 +24,12 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | GNi_intrin | input scale to interneurons NMDA | `zeros(m,1)` | Now just interneurons? Does it overwrite a previously defined value, like GN_intrin?|
 | GAi_intrin | Mg-switch sigmoid scale, slope and sensitivity | `zeros(m,1)` | Shouldn't this be for NMDA as well? Why does it share the notation for the AMPA input scale?|
 | GGi_intrin | input scale to GABA for each of the m sources.| `zeros(m,1)` | Only for interneurons? |
-| CV | membrane capacitance for all m sources | `zeros(1,p)`|
-| E | background noise | 0 |
-| A | extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from) | `{1×2 cell}`, each cell: `mxm sparse double`, with `-32` if no connection established and `0` if connection established. | How does it know? Where to find this operation? Why `-32`? | [spm_cmm_NMDA_priors.m#L82](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m#L82)
-| AN | extrinsic connections for NMDA (same shape as A) | idem | idem|
-| C | subcortical input | `[]` | If dealing with resting-state EEG.
-| H | intrinsic connectivity. | `zeros(p, p, m)`| Unused? Synaptic densities? Rows and columns for one source: **1** - excitatory spiny stellate cells (granular input cells); **2** - superficial pyramidal cells     (forward  output cells); **3** - inhibitory interneurons (intrisic interneuons); **4** - deep pyramidal cells (backward output cells)
+| CV | membrane capacitance for all m sources | `zeros(1,p)`| | Exponentation here [spm_fx_cmm_NMDA.m#L145](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L145)|
+| E | background noise | 0 | | Exponentation here: [spm_fx_cmm_NMDA.m#L166](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L166)
+| A | extrinsic connections for AMPA (forward {1} and backward {2} connections between sources, row: to, col: from) | `{1×2 cell}`, each cell: `mxm sparse double`, with `-32` if no connection established and `0` if connection established. | How does it know? Where to find this operation? Why `-32`? | [spm_cmm_NMDA_priors.m#L82](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m#L82) Exponentiation here: [spm_fx_cmm_NMDA.m#L63](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L63)
+| AN | extrinsic connections for NMDA (same shape as A) | idem | idem| Exponentiation here: [spm_fx_cmm_NMDA.m#L65](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L65)
+| C | subcortical input | `[]` | If dealing with resting-state EEG. | Exponentation here [spm_fx_cmm_NMDA.m#L67](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L67)
+| H | intrinsic connectivity. | `zeros(p, p, m)`| Unused? Synaptic densities? Rows and columns for one source: **1** - excitatory spiny stellate cells (granular input cells); **2** - superficial pyramidal cells     (forward  output cells); **3** - inhibitory interneurons (intrisic interneuons); **4** - deep pyramidal cells (backward output cells) | No exponentation here: [spm_fx_cmm_NMDA.m#L83](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L83)
 | R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | because `u=0`, in my case. Actual meaning?
 | D | delays (unused) | `zeros(m, m)`| Why unused? Why this value?
 | Lpos | ROIs (unused) | `sparse(3,0)` | Why unused? When is it used?
