@@ -137,8 +137,8 @@ DCM
 |    ├─── n                                             # total number of neural states. Defined as length(spm_vec(DCM.M.x))
 |    ├─── pC                                            # prior (co)variances
 |    |   ├─── model_definition
-|    ├─── hE                                            # prespecified as 8 or 6? Why? What does this represent? conditional log-precisions E{h|y} (spm_nlsi_GN.m)
-|    ├─── hC                                            # prespecified as 1/128 or 1/64? Why? What does this represent?
+|    ├─── hE                                            # prespecified as 8 or 6? Why? What does this represent? E{h}   of log-precision parameters (spm_nlsi_GN.m)
+|    ├─── hC                                            # prespecified as 1/128 or 1/64? Why? What does this represent? Cov{h} of log-precision parameters (spm_nlsi_GN.m)
 |    ├─── m                                             # number of sources
 |    ├─── u: sparse(m,1)						# inputs or causes
 |    ├─── U									# channel eigenmodes
