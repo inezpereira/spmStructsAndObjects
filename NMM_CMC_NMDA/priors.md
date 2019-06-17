@@ -3,7 +3,7 @@
 `m` represents the number of sources.
 `p` is the number of cell populations in each source. Given that we are considering the implementation with the canonical microcircuit: `p=4`.
 `u` is the number of inputs.
-`Nc` is the number of channels.
+`Nc` is the number of sensor channels.
 
 I will use common Matlab functions to more concisely express what the parameters are.
 
@@ -16,7 +16,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | Field  | Meaning | Value  | Questions or comments| Script with documentation about variable / Script where use of variable becomes clear
 |:----------|:----------|:----------|:----------|:----------|
 | S    | population variance | 0   | | Exponentation here: [spm_fx_cmm_NMDA.m#L153](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L153)
-| T   |time constants for AMPA, GABA and NMDA channels. One row for each source.  | `zeros(m,3)`   | | Exponentation here [spm_fx_cmm_NMDA.m#L132-L134](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L132-L134)
+| T   |time constants for AMPA, GABA and NMDA channels (3 ion channels). One row for each source.  | `zeros(m,3)`   | | Exponentation here [spm_fx_cmm_NMDA.m#L132-L134](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L132-L134)
 | G | intrinsic connectivity |`zeros(m,1)` | Represents the gain and is only applied to the superficial pyramidal cells in each source, hence the dimensions. | Check: [spm_fx_cmm_NMDA.m#L85](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L85)
 | GN_intrin | input scale to NMDA for each of the m sources. | `zeros(m,1)` | Same parameters for all cells containing NMDA receptor? Or just for pyramidal cells? (see the paramters with "i")|
 | GA_intrin | input scale to AMPA for each of the m sources |  `zeros(m,1)` | Idem|
@@ -33,7 +33,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | because `u=0`, in my case. Actual meaning?
 | D | delays (unused) | `zeros(m, m)`| Why unused? Why this value?
 | Lpos | ROIs (unused) | `sparse(3,0)` | Why unused? When is it used?
-| L | leadfield | `zeros(Nc,m)`|
+| L | leadfield | `zeros(6,m)`| Dimensionality probably due to location (x y z) and direction (x y z).
 | J | contributing states |`zeros(1,16)`, except for `(1,2)=1`| What is this?
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| What is this, really? Why these dimensions?
 |b | channel noise (not source-specific, amplitude and exponent)  |`zeros(2,1)`| 2 channels?
