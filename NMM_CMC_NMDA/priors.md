@@ -38,7 +38,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| What is this, really? Why these dimensions?
 |b | channel noise (not source-specific, amplitude and exponent)  |`zeros(2,1)`| 2 channels?
 |c | channel noise (source-specific, amplitude and exponent) |`zeros(2,1)`| Understand dimensions. This 1 in my model is only one because `size(pE.L,1) ~= 1`, meaning, I had more than one channel (https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L42)| (spm_ssr_priors.m#L42)[spm_ssr_priors.m#L49](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L49)
-|d | channel noise (basis set coefficients) |`zeros(8,m)`| Why is the first dimension set to 8?
+|d | neuronal innovations: DCT (discrete cosine transform) basis set coefficients for structured spectra)) |`zeros(8,m)`| Why is the first dimension set to 8? I thiink this is just standard when using DCT. When using this for images, the image typically gets dividied into 8 by 8 pixel squares and you calculate the basis functions for each of these squares. For a great introduction of DCT, see [here](https://www.youtube.com/watch?v=Q2aEzeMDHMA). In our case, we are dealing with a one-dimensional signal, so what is happening here is that you are calculating the 8 coefficients needed to represent the signal from each source.
 
 
 
