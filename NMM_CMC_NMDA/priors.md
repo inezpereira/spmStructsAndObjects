@@ -33,7 +33,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | because `u=0`, in my case. Actual meaning?
 | D | delays (unused) | `zeros(m, m)`| Why unused? Why this value?
 | Lpos | ROIs (unused) | `sparse(3,0)` | Why unused? When is it used?
-| L | leadfield | `zeros(6,m)`| Dimensionality probably due to location (x y z) and direction (x y z).
+| L | leadfield | `zeros(6,m)`| Dimensionality probably due to location (x y z) and direction (x y z). | This is where you see the parameters applied: [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m) !
 | J | contributing states |`zeros(1,16)`, except for `(1,2)=1`| What is this?
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| What is this, really? Why these dimensions? | Exponentiation here: [spm_csd_mtf_gu.m#L47](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L47). Basically, what you get is: `a*1/f^b`, where `a` and `b` are the exponentiated 
 |b | channel noise (not source-specific, amplitude and exponent)  |`zeros(2,1)`| Not (source?) specific, hence the 1. | Exponentiation here: [spm_csd_mtf_gu.m#L73](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L73)
