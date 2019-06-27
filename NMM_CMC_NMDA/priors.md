@@ -17,7 +17,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 |:----------|:----------|:----------|:----------|:----------|
 | S    | population variance | 0   | | Exponentation here: [spm_fx_cmm_NMDA.m#L153](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L153)
 | T   |time constants for AMPA, GABA and NMDA channels (3 ion channels). One row for each source.  | `zeros(m,3)`   | | Exponentation here [spm_fx_cmm_NMDA.m#L132-L134](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L132-L134)
-| G | intrinsic connectivity (unused) |`zeros(m,1)` | Represents the gain and is only applied to the superficial pyramidal cells in each source, hence the dimensions. | Check: [spm_fx_cmm_NMDA.m#L85](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L85)
+| G | intrinsic connectivity  |`zeros(m,1)` (unused) | Represents the gain and is only applied to the superficial pyramidal cells in each source, hence the dimensions. | Check: [spm_fx_cmm_NMDA.m#L85](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L85)
 | GN_intrin | input scale to NMDA for each of the m sources. | `zeros(m,1)` | Same parameters for all cells containing NMDA receptor? Or just for pyramidal cells? (see the paramters with "i")|
 | GA_intrin | input scale to AMPA for each of the m sources |  `zeros(m,1)` | Idem|
 | GG_intrin | input scale to GABA for each of the m sources.| `zeros(m,1)` | Idem |
