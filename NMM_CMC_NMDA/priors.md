@@ -38,7 +38,8 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| | Exponentiation here: [spm_csd_mtf_gu.m#L47](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L47). Basically, what you get is: `a*1/f^b`, where `a` and `b` are the exponentiated 
 |b | channel noise (not source-specific, amplitude and exponent)  |`zeros(2,1)`| Not (source?) specific, hence the 1. | Exponentiation here: [spm_csd_mtf_gu.m#L73](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L73)
 |c | channel noise (specific, amplitude and exponent) |`zeros(2,1)`| Specific to what?? Hint found in [spm_csd_mtf_gu.m#L78](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L75): 'specific; would mean with same exponent. Another hint in [spm_csd_mtf.m#L132](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf.m#L132): it seems to only affect the diagonal terms of the CSD. Understand dimensions. This 1 in my model is only one because `size(pE.L,1) ~= 1`... see [here](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L42). Why is this set this way?? If we hadmet the condition, then we would have a 4 in the second dimension.| Priors set in: [spm_ssr_priors.m#L49](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L49) Exponentation here: [spm_csd_mtf_gu.m#L78](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L78)
-|d | neuronal innovations: DCT (discrete cosine transform) basis set coefficients for structured spectra |`zeros(8,m)`| I think 8 is just standard when using DCT. When using this for images, the image typically gets dividied into 8 by 8 pixel squares and you calculate the basis functions for each of these squares. For a great introduction of DCT, see [here](https://www.youtube.com/watch?v=Q2aEzeMDHMA). In our case, we are dealing with a one-dimensional signal, so what is happening here is that you are calculating the 8 coefficients needed to represent the signal from each source. | Exponentation here: [spm_csd_mtf_gu.m#L58](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L58)
+|d | neuronal innovations: DCT (discrete cosine transform) basis set coefficients for structured spectra |`zeros(8,m)`| I think 8 is just standard when using DCT. When using this for images, the image typically gets dividied into 8 by 8 pixel squares and you calculate the basis functions for each of these squares. For a great introduction of DCT, see [here](https://www.youtube.com/watch?v=Q2aEzeMDHMA). In our case, we are dealing with a one-dimensional signal, so what is happening here is that you are calculating the 8 coefficients needed to represent the signal from each source. | Exponentation here: [spm_csd_mtf_gu.m#L58](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L58). However: first dimension defined as `8` in the version of SPM I am using, but as `4` in [spm_ssr_priors.m#L53](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53). Why this discrepancy??
+
 
 
 
@@ -50,16 +51,16 @@ We now turn to the covariance parameter of these. Since the the meaning of the p
 |:----------|:----------|:----------|:----------|
 | S    		| 1/64 | Why this particular value? How was it found? | Defined in [spm_cmm_NMDA_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m) and script includes citation of David O, Friston KJ (2003) "A neural mass model for MEG/EEG: coupling and neuronal dynamics". *NeuroImage* 20: 1743-1755.
 | T | `ones(m,3)/16` | Idem
-| G | `zeros(m,	1)/16` (unused)| Zero expectation and zero variance?? Where is within source connectivity defined?|  Defined in [spm_cmm_NMDA_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m)
+| G | `zeros(m,	1)/16` (unused)| Zero expectation and zero variance?? |  Defined in [spm_cmm_NMDA_priors.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m)
 | GN_intrin | `ones(m,1)/8`| Why this value?|
 | GA_intrin | `ones(m,1)/8`| Idem|
 | GG_intrin | `ones(m,1)/8`| Idem|
 | GNi_intrin | `ones(m,1)/8`| Idem|
 | GAi_intrin |`ones(m,1)/8`| Idem|
 | GGi_intrin | `ones(m,1)/8` (unused) | Idem|
-| CV | `zeros(1,p)/16` | Zero expectation and zero variance?? How can I always have membrane capacitance?|
+| CV | `zeros(1,p)/16` | Zero expectation and zero variance??|
 | E | 1/128 | Why this value?|
-| A | `{1×2 cell}`, each cell: `mxm double`, with `0` if no connection established and `1/8` if connection established. | So `0` covariance for the expected value `-32`? Again, why this value? And why fix it? | [spm_cmm_NMDA_priors.m#L83](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m#L83)
+| A | `{1×2 cell}`, each cell: `mxm double`, with `0` if no connection established and `1/8` if connection established. | Again, why this value for the existing connections? | [spm_cmm_NMDA_priors.m#L83](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_cmm_NMDA_priors.m#L83)
 | AN | Idem (unused)| Idem
 | C | `[]`
 | H | `zeros(p, p, m)` | Rows and columns for one source: 1 - excitatory spiny stellate cells (granular input cells); 2 - superficial pyramidal cells     (forward  output cells); 3 - inhibitory interneurons (intrisic interneuons); 4 - deep pyramidal cells (backward output cells)
@@ -71,4 +72,4 @@ We now turn to the covariance parameter of these. Since the the meaning of the p
 |a | `sparse(2,m) + 1/128` | Why?
 |b | `sparse(2,1) + 1/128` | Why?
 |c | Idem | Idem
-|d |`sparse(8,m) + 1/128`| Why this particular value? Why this first dimension `d`. | `d` defined as `8` in the version of SPM I am using, but as `4` in [spm_ssr_priors.m#L53](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53). Why this discrepancy??
+|d |`sparse(8,m) + 1/128`| Why this particular value? | 
