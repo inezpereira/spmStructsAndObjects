@@ -39,4 +39,7 @@ From the function documentation (c here in not the `c` defined above! Figure thi
     - **Output**: `Gu` is `5 by 4` → neuronal innovations per analyzed frequency, per source.
 - Computes discrete cosine set (DCT) of order 8 (in our SPM version) and 4 (in [SPM12](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53))
     - Reminder: 
-![dct](dct.png)
+<!--![dct](dct.png)-->
+<img src="dct.png" width="600" height="325" />
+
+
