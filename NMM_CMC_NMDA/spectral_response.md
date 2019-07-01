@@ -39,8 +39,9 @@ From the function documentation (c here in not the `c` defined above! Figure thi
     - **Output**: `Gu` is `5 by 4` → neuronal innovations per analyzed frequency, per source.
 - Computes discrete cosine set (DCT) of order 8 (in our SPM version) and 4 (in [SPM12](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53))
     - **Reminder**: `y` is the data, `C` is represented by `X` in the code, and `x` is our `d`!
-<!--![dct](dct.png)-->
-<img src="dct.png" width="300" height="162.5" />
+<p align="center">
+  <img width="300" height="162.5" src="dct.png">
+</p>
 
 - **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
     - Why are we ignoring the first column?
