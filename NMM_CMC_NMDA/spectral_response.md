@@ -38,8 +38,10 @@ From the function documentation (c here in not the `c` defined above! Figure thi
             - Hence, output is: `A*(1/f^B)`, `f` is a vector containing the analyzed frequencies.
     - **Output**: `Gu` is `5 by 4` → neuronal innovations per analyzed frequency, per source.
 - Computes discrete cosine set (DCT) of order 8 (in our SPM version) and 4 (in [SPM12](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53))
-    - Reminder: 
+    - **Reminder**: `y` is the data, `C` is represented by `X` in the code, and `x` is our `d`!
 <!--![dct](dct.png)-->
 <img src="dct.png" width="600" height="325" />
+
+- **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
 
 
