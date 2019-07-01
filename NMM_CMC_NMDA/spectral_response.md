@@ -42,9 +42,12 @@ From the function documentation (c here in not the `c` defined above! Figure thi
 <p align="center">
   <img width="600" height="350" src="dct.png">
 </p>
-
-- **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
-    - Why are we ignoring the first column?
-    - Why the exponential?
+    - Dimensions:
+        - `X` is `5 by 9`
+        - `d` is `8 by 4`
+        - `Mu` is `5 by 4`
+	- **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
+  	  - Why are we ignoring the first column?
+  	  - Why the exponential?
 
 
