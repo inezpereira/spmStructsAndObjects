@@ -3,7 +3,7 @@
 `m` represents the number of sources.
 `p` is the number of cell populations in each source. Given that we are considering the implementation with the canonical microcircuit: `p=4`.
 `u` is the number of inputs.
-`Nc` is the number of sensor channels.
+`c` is the number of sensor channels.
 
 I will use common Matlab functions to more concisely express what the parameters are.
 
