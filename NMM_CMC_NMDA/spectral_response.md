@@ -40,7 +40,7 @@ From the function documentation (c here in not the `c` defined above! Figure thi
 - Computes discrete cosine set (DCT) of order 8 (in our SPM version) and 4 (in [SPM12](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53))
     - **Reminder**: `y` is the data, `C` is represented by `X` in the code, and `x` is our `d`!
 <p align="center">
-  <img width="300" height="162.5" src="dct.png">
+  <img width="600" height="350" src="dct.png">
 </p>
 
 - **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
