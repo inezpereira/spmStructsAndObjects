@@ -4,6 +4,7 @@
 `p` is the number of cell populations in each source. Given that we are considering the implementation with the canonical microcircuit: `p=4`.
 `u` is the number of inputs.
 `c` is the number of sensor channels.
+`nf` is the number of analyzed frequencies.
 
 ## Function dissection: [spm_csd_mtf.m](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf.m)
 
@@ -17,7 +18,11 @@ M.x contains the hidden states! In our case, the membrane voltage and the conduc
 - Check number of channels (7 in our case)
     - COMMENT: this part is also supposed to, according to the documenation, get exogenous (neuronal) inputs or sources. Instead, stores the number of different frequencies which are being analyzed (see [here](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf.m#L72)).
 - Obtain spectrum of innovations (Gu) and noise (Gs and Gn)
-    - Calls [spm_csd_mtf_gu.m](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf_gu.m)
+    - Calls [spm_csd_mtf_gu.m](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf_gu.m) and gets:
+		- `Gu (nf by m)`: spectrum of neuronal innovations multiplied with DCT
+		- `Gs (nf by 1)`: spectrum of channel noise (specific: with the same exponent)
+		- `Gn (nf by 1)`: spectrum of channel noise (non-specific)
+		- **DON'T UNDERSTAND:** Why do we need Gs and Gn??
 
 
 ## Function dissection: [spm_csd_mtf_gu.m](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf_gu.m)
@@ -39,15 +44,32 @@ From the function documentation (c here in not the `c` defined above! Figure thi
     - **Output**: `Gu` is `5 by 4` → neuronal innovations per analyzed frequency, per source.
 - Computes discrete cosine set (DCT) of order 8 (in our SPM version) and 4 (in [SPM12](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_ssr_priors.m#L53))
     - **Reminder**: `y` is the data, `C` is represented by `X` in the code, and `x` is our `d`!
-<p align="center">
-  <img width="600" height="350" src="dct.png">
-</p>
-    - Dimensions:
+
+	- Dimensions:
         - `X` is `5 by 9`
         - `d` is `8 by 4`
         - `Mu` is `5 by 4`
 	- **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
   	  - Why are we ignoring the first column?
   	  - Why the exponential?
+
+<p align="center">
+  <img width="600" height="350" src="dct.png">
+</p>
+
+**Source**: Meyer-Baese and
+Schmid, *Pattern Recognition and Signal Analysis in Medical Imaging*, 2014.
+
+- Then: `Gu = Gu.*Mu;`
+	- **DON'T UNDERSTAND:** Why are we doing this elementwise multiplication?
+- Generate spectra of specific (P.c) and nonspecific (P.d) channel noise: 
+    - For `Gn` and `Gs` : same general observations as those for the neuronal innovations
+	- `size(Gn) = size(Gs) = [nf,1]`
+    - **DON'T UNDERSTAND:** 
+        - What is meant by `(specific: with the same exponent)`??
+		- Why is `Gs` computed so: `Gn  = exp(P.b(1) - 2)*f.^(-exp(P.b(2)))`
+			- What's with the `-2`? (same goes for `Gn`!)
+		- Why do we need 2 terms which basically the same thing?
+
 
 
