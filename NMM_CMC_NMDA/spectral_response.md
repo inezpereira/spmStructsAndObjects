@@ -30,10 +30,10 @@ M.x contains the hidden states! In our case, the membrane voltage and the conduc
 - Loops over trials (experimental conditions) and condition-specific parameters
 	- Since we don't have any, `Q` is the same as `P`
 	- In `M.x = spm_dcm_neural_x(Q,M)`, `M.x` does not get changed.
-		- **DON'T UNDERSTAND:** this function is supposed to *return the fixed point or steady-state of a neural mass DCM*. From the code, we are not applying it because M.f (in our case `spm_fx_cmm_nmda.m` is not included in the cases defined in the function: `spm_fx_cmm` and `spm_fx_mfm`.
-	- Compte transfer function (Laplace transform of the impulse response of an LTI system when initial conditions are zero)
+		- **DON'T UNDERSTAND:** this function is supposed to *return the fixed point or steady-state of a neural mass DCM*. From the code, we are not applying it because M.f (in our case `spm_fx_cmm_nmda.m`) is not included in the cases defined in the function: `spm_fx_cmm` and `spm_fx_mfm`. We are, according to the code, acting as if we had a convolution based model.
+	- Compute transfer function (= Laplace transform of the impulse response of an LTI system when initial conditions are zero)
 		- [This](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/spm_dcm_mtf.m#L68) is where `spm_fx_cmm_nmda.m` gets called!
-		- **DON'T REALLY UNDERSTAND THIS STEP.**
+		- **DON'T REALLY UNDERSTAND THIS STEP:** should I then conceptualize the neuronal model as the transfer function and the neuronal innovations as input to the system?
 	- Predicts cross spectral density `G`
 		- **DON'T UNDERSTAND:** `G(i,:,:) = sq(S(i,:,:))*diag(Gu(i,:))*sq(S(i,:,:))'`
 			- What formula is being used here? I understand that we are iterating over the frequencies.
