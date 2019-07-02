@@ -20,17 +20,17 @@ M.x contains the hidden states! In our case, the membrane voltage and the conduc
 - Check for experimental inputs (none in our model);
 - Define frequencies of interest;
 - Check number of channels (7 in our case)
-    - COMMENT: this part is also supposed to, according to the documenation, get exogenous (neuronal) inputs or sources. Instead, stores the number of different frequencies which are being analyzed (see [here](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf.m#L72)).
+    - COMMENT: this part is also supposed to, according to the documentation, get exogenous (neuronal) inputs or sources. Instead, it stores the number of different frequencies which are being analyzed (see [here](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf.m#L72)).
 - Obtain spectrum of innovations (Gu) and noise (Gs and Gn)
     - Calls [spm_csd_mtf_gu.m](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf_gu.m) and gets:
 		- `Gu (nf by m)`: spectrum of neuronal innovations multiplied with DCT
 		- `Gs (nf by 1)`: spectrum of channel noise (specific: with the same exponent)
 		- `Gn (nf by 1)`: spectrum of channel noise (non-specific)
-		- **DON'T UNDERSTAND:** Why do we need Gs and Gn??
-- Cycles over trials (experimental conditions) and condition-specific parameters
-	- Since we don't have any `Q` is the same as `P`
+		- **DON'T UNDERSTAND:** Why do we need Gs *and* Gn?
+- Loops over trials (experimental conditions) and condition-specific parameters
+	- Since we don't have any, `Q` is the same as `P`
 	- In `M.x = spm_dcm_neural_x(Q,M)`, `M.x` does not get changed.
-		- **DON'T UNDERSTAND:** what are we doing here?
+		- **DON'T UNDERSTAND:** this function is supposed to *return the fixed point or steady-state of a neural mass DCM*. From the code, we are not applying it because M.f (in our case `spm_fx_cmm_nmda.m` is not included in the cases defined in the function: `spm_fx_cmm` and `spm_fx_mfm`.
 	- Compte transfer function (Laplace transform of the impulse response of an LTI system when initial conditions are zero)
 		- [This](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/spm_dcm_mtf.m#L68) is where `spm_fx_cmm_nmda.m` gets called!
 		- **DON'T REALLY UNDERSTAND THIS STEP.**
