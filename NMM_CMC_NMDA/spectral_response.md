@@ -16,6 +16,9 @@ From the function documentation: *When called with U this function will return a
 
 M.x contains the hidden states! In our case, the membrane voltage and the conductances for all three receptors AMPA, NMDA and GABA.
 
+### General observations
+In our model, we have two terms for pink noise and no term for white noise. Different from what is Eq. 7 in paper "DCM for complex-valued data: Cross-spectra, coherence and phase-delays"
+
 ### Function outline:
 - Check for experimental inputs (none in our model);
 - Define frequencies of interest;
@@ -37,6 +40,7 @@ M.x contains the hidden states! In our case, the membrane voltage and the conduc
 	- Predicts cross spectral density `G`
 		- **DON'T UNDERSTAND:** `G(i,:,:) = sq(S(i,:,:))*diag(Gu(i,:))*sq(S(i,:,:))'`
 			- What formula is being used here? I understand that we are iterating over the frequencies.
+			- Check out the paper [A DCM for fMRI](https://www.sciencedirect.com/science/article/pii/S1053811913012135) from Friston *et al.*
 - Add channel noise
 	- Add channel specific noise: we only add `Gs` to the diagonal terms of the predicted CSD
 		- **DON'T UNDERSTAND:** why? What does this say about the noise being specific?
@@ -70,7 +74,7 @@ From the function documentation (c here in not the `c` defined above! Figure thi
         - `Mu` is `5 by 4`
 	- **DON'T UNDERSTAND:** `Mu = exp(X(:,2:end)*P.d)`
   	  - Why are we ignoring the first column?
-  	  - Why the exponential?
+  	  - Why the exponential? Positivity constraint?
 
 <p align="center">
   <img width="600" height="350" src="dct.png">
