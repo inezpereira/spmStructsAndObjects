@@ -85,10 +85,10 @@ Schmid, *Pattern Recognition and Signal Analysis in Medical Imaging*, 2014.
     - For `Gn` and `Gs` : same general observations as those for the neuronal innovations
 	- `size(Gn) = size(Gs) = [nf,1]`
     - **DON'T UNDERSTAND:** 
-        - What is meant by `(specific: with the same exponent)`??
+        - What is meant by `(specific: with the same exponent)`?
 		- Why is `Gs` computed so: `Gn  = exp(P.b(1) - 2)*f.^(-exp(P.b(2)))`
 			- What's with the `-2`? (same goes for `Gn`!)
-		- Why do we need 2 terms which basically the same thing?
+		- Why do we need 2 terms which are basically the same thing?
 
 
 
