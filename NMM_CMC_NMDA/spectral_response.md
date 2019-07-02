@@ -1,4 +1,4 @@
-# Understanding how spectral response of a NMM is generated in SPM
+# Understanding how the spectral response of a NMM is generated in SPM
 
 `m` represents the number of sources.
 `p` is the number of cell populations in each source. Given that we are considering the implementation with the canonical microcircuit: `p=4`.
