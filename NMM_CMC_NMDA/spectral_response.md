@@ -1,9 +1,13 @@
 # Understanding how the spectral response of a NMM is generated in SPM
 
 `m` represents the number of sources.
+
 `p` is the number of cell populations in each source. Given that we are considering the implementation with the canonical microcircuit: `p=4`.
+
 `u` is the number of inputs.
+
 `c` is the number of sensor channels.
+
 `nf` is the number of analyzed frequencies.
 
 ## Function dissection: [spm_csd_mtf.m](https://tnurepository.ethz.ch/inesb/anti-nmda/blob/master/src/preproc_and_DCM/src/spm12/toolbox/dcm_meeg/spm_csd_mtf.m)
