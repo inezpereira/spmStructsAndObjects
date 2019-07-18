@@ -91,10 +91,12 @@ Uses SVD (an eigensolution) to identify the patterns with the greatest prior cov
 ```
 
 ### Questions:
-	- Nm : here 7 and regarded as an upper bound? Why is it different?
-	- #33: what is happening?...
-	- #40: why SVD of L*L'?
-	- #70: re-scale spatial projector --> Why U = U/sqrt(mean(S)) ?
+
+- Nm : here 7 and regarded as an upper bound? Why is it different?
+- #33: what is happening?...
+- #40: why SVD of L*L'?
+- #70: re-scale spatial projector --> Why U = U/sqrt(mean(S)) ?
+
 
 ## Important vocabulary:
 - **ECD** = A summation of currents of many neurons with the same positive-negative direction can be mimicked as one strong dipole. This is termed the equivalent current dipole (ECD). From [here](https://link.springer.com/referenceworkentry/10.1007%2F978-3-540-29805-2_1361).
