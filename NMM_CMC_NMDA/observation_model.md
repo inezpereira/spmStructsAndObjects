@@ -90,12 +90,6 @@ Uses SVD (an eigensolution) to identify the patterns with the greatest prior cov
 % U       - channel eigenmodes
 ```
 
-number of modes required (upper bound) is an upper bound??
-
-And here Nm is 7??
-
-What is this "re-scale spatial projector"??
-
 ### Questions:
 	- Nm : here 7 and regarded as an upper bound? Why is it different?
 	- #33: what is happening?...
