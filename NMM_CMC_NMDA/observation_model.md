@@ -75,16 +75,32 @@ Function which prepares structures for ECD forward model. Defines spatial model?
 	- What is Dp?
 - #202: How is Ip helpful? What is going on here?
 
-#214: Nm, by default 6 is being used for SVD! But didn't we want 7 here??
+
 
 ## Function dissection `spm_dcm_eeg_channelmodes`
 Returns the channel eigenmodes.
+Uses SVD (an eigensolution) to identify the patterns with the greatest prior covariance; assuming independent source activity in the specified spatial (forward) model. 
+
+```
+% FORMAT [U] = spm_dcm_eeg_channelmodes(dipfit,Nm) % OUR USAGE
+% FORMAT [U] = spm_dcm_eeg_channelmodes(dipfit,Nm,xY)
+% dipfit  - spatial model specification
+% Nm      - number of modes required (upper bound)
+% xY      - data structure
+% U       - channel eigenmodes
+```
 
 number of modes required (upper bound) is an upper bound??
 
 And here Nm is 7??
 
 What is this "re-scale spatial projector"??
+
+### Questions:
+	- Nm : here 7 and regarded as an upper bound? Why is it different?
+	- #33: what is happening?...
+	- #40: why SVD of L*L'?
+	- #70: re-scale spatial projector --> Why U = U/sqrt(mean(S)) ?
 
 ## Important vocabulary:
 - **ECD** = A summation of currents of many neurons with the same positive-negative direction can be mimicked as one strong dipole. This is termed the equivalent current dipole (ECD). From [here](https://link.springer.com/referenceworkentry/10.1007%2F978-3-540-29805-2_1361).
