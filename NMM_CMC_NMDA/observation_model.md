@@ -2,13 +2,11 @@
 
 Function which prepares structures for ECD forward model. Defines spatial model?
 
-ECD* = A summation of currents of many neurons with the same positive-negative direction can be mimicked as one strong dipole. This is termed the equivalent current dipole (ECD). From [here](https://link.springer.com/referenceworkentry/10.1007%2F978-3-540-29805-2_1361).
-
 ```
 % needs:
-%       DCM.xY.Dfile
-%       DCM.xY.Ic
-%       DCM.Lpos
+%       DCM.xY.Dfile 			% <path/to/preprocessed/EEG/data>
+%       DCM.xY.Ic				% Good channel indices
+%       DCM.Lpos				% Position of sources
 %       DCM.options.spatial     - 'ERP', 'LFP' or 'IMG'
 %
 % fills in:
@@ -27,43 +25,55 @@ ECD* = A summation of currents of many neurons with the same positive-negative d
 %
 %    dipfit.vol      - volume structure (for M/EEG)
 %    dipfit.datareg  - registration structure (for M/EEG)
+
+  			struct with fields:
+
+     			sensors: [1×1 struct]
+     			fid_eeg: [1×1 struct]
+     			fid_mri: [1×1 struct]
+       			toMNI: [4×4 double]
+     			fromMNI: [4×4 double]
+    			modality: 'EEG'
+
+%	dipfit.sens
+
+  			struct with fields:
+
+     			chanpos: [21×3 double]
+     			elecpos: [21×3 double]
+    			chantype: {1×21 cell}
+    			chanunit: {1×21 cell}
+       			label: {1×21 cell}
+        		unit: 'mm'
+
+%	dipfit.rad - default is 16 mm
+% 	dipfit.G - {1×m} cell{i}, where G{i} = L(:,Ip)*U , where i=1:4 and U = rotation matrix from SVD on part of the lead field matrix
+% 	dipfit.U - {1×m} cell, singular vectors
+% 	dipfit.Ip - {1×m} cell
+% 	dipfit.Nd - number of dipoles
+% 	dipfit.gainmat -  Lead field filename
+
 ```
 
+### Questions:
+- How are the Lpos defined? Is there a sort of prior which is then adapted according to the head model?
 
-- Get data filename and good channels
-- Get source locations if MEG or EEG
-- Fill in dipfit
-    - DCM.M.dipfit.vol: gets its corresponding head model
-    - DCM.M.dipfit.datareg: 
-```
-  struct with fields:
-
-     sensors: [1×1 struct]
-     fid_eeg: [1×1 struct]
-     fid_mri: [1×1 struct]
-       toMNI: [4×4 double]
-     fromMNI: [4×4 double]
-    modality: 'EEG'
-```
-    - DCM.M.dipfit.sens
-
-```
-  struct with fields:
-
-     chanpos: [21×3 double]
-     elecpos: [21×3 double]
-    chantype: {1×21 cell}
-    chanunit: {1×21 cell}
-       label: {1×21 cell}
-        unit: 'mm'
-```
-
-### Imaging (distributed source reconstruction)
-- Load Gain or Lead field matrix
-- Sets parameters:
-	- defaults: Nm = 6; number of modes per region and rad=16
-#187: do not understand the number of modes per region stuff!
-- Compute spatial basis (eigenmodes of lead field)
+- About DCM.M.dipfit:
+	- dipfit.location : what does setting it to zero mean? That we are not estimating the locations? That they are fixed?
+	- dipfit.type: What are the difference?
+		- 'ECD': equivalent current dipole? "parameterised lead field"
+		- 'LFP': "LFP electrode gain". OK, so specific forward model for LFP.
+		- 'IMG': "Imaging solution"?? What is this option? Why is it default?
+	- dipfit.Nm: what are the modes?
+	- dipfit.Nc; number of GOOD channels?
+	- dipfit.vol: head model? Age dependent?
+	- dipfit.datareg: what is this?
+	- dipfit.rad: radius for the sources?
+	- dipfit.Nm: still don't get why default of 6 is ok.
+- #194: create MSP spatial basis set in source space --> What is happening here?
+	- What is vert?
+	- What is Dp?
+- #202: How is Ip helpful? What is going on here?
 
 #214: Nm, by default 6 is being used for SVD! But didn't we want 7 here??
 
@@ -75,3 +85,8 @@ number of modes required (upper bound) is an upper bound??
 And here Nm is 7??
 
 What is this "re-scale spatial projector"??
+
+## Important vocabulary:
+- **ECD** = A summation of currents of many neurons with the same positive-negative direction can be mimicked as one strong dipole. This is termed the equivalent current dipole (ECD). From [here](https://link.springer.com/referenceworkentry/10.1007%2F978-3-540-29805-2_1361).
+- **LFP**: The Local Field Potential (LFP) is the electric potential recorded in the extracellular space in brain tissue, typically using micro-electrodes (metal, silicon or glass micropipettes). LFPs differ from the EEG, which is recorded at the surface of the scalp, and with macro-electrodes. It also differs from the electro-corticogram (EcoG), which are recorded from the surface of the brain using large subdural electrodes, while LFPs are recorded in depth, from within the cortical tissue (or other deep brain structures).
+Besides their invasive aspect, LFPs also sample relatively localized populations of neurons, as these signals can be very different for electrodes separated by 1 mm (Destexhe et al., 1999) or by a few hundred microns (Katzner et al., 2009). In contrast, the EEG samples much larger populations of neurons (Niedermeyer and Lopes da Silva, 1998). The difference is due to the fact that the EEG signals must propagate through various media, such as cerebrospinal fluid, dura matter, cranium, muscle and skin, and are therefore much more subject to filtering and diffusion phenomena across these media. However, even if recorded close to the neuronal sources, LFP signals are also filtered, because the recording electrode is separated from the sources by portions of cortical tissue. Besides these differences, EEG and LFP signals display the same type of oscillations during wake and sleep states (Steriade, 2003). From [Scholarpedia](http://scholarpedia.org/article/Local_field_potential).
