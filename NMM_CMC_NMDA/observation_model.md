@@ -1,13 +1,41 @@
 ## Function dissection `spm_dcm_erp_dipfit`
 
-Function which prepares structures for ECD forward model.
+Function which prepares structures for ECD forward model. Defines spatial model?
+
+ECD* = A summation of currents of many neurons with the same positive-negative direction can be mimicked as one strong dipole. This is termed the equivalent current dipole (ECD). From [here](https://link.springer.com/referenceworkentry/10.1007%2F978-3-540-29805-2_1361).
+
+```
+% needs:
+%       DCM.xY.Dfile
+%       DCM.xY.Ic
+%       DCM.Lpos
+%       DCM.options.spatial     - 'ERP', 'LFP' or 'IMG'
+%
+% fills in:
+%
+%       DCM.M.dipfit
+%
+%    dipfit.location - 0 or 1 for source location priors
+%    dipfit.symmetry - 0 or 1 for symmetry constraints on sources
+%    dipfit.modality - 'EEG', 'MEG', 'MEGPLANAR' or 'LFP'
+%    dipfit.type     - 'ECD', 'LFP' or 'IMG''
+%    dipfit.symm     - distance (mm) for symmetry constraints (ECD)
+%    dipfit.Lpos     - x,y,z source positions (mm)            (ECD)
+%    dipfit.Nm       - number of modes                        (Imaging)
+%    dipfit.Ns       - number of sources
+%    dipfit.Nc       - number of channels
+%
+%    dipfit.vol      - volume structure (for M/EEG)
+%    dipfit.datareg  - registration structure (for M/EEG)
+```
+
 
 - Get data filename and good channels
 - Get source locations if MEG or EEG
 - Fill in dipfit
     - DCM.M.dipfit.vol: gets its corresponding head model
     - DCM.M.dipfit.datareg: 
-```matlab
+```
   struct with fields:
 
      sensors: [1×1 struct]
@@ -19,7 +47,7 @@ Function which prepares structures for ECD forward model.
 ```
     - DCM.M.dipfit.sens
 
-```matlab
+```
   struct with fields:
 
      chanpos: [21×3 double]
