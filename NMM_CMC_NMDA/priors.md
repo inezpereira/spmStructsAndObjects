@@ -31,8 +31,8 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | C | subcortical input | `[]` | If dealing with resting-state EEG. | Exponentation here [spm_fx_cmm_NMDA.m#L67](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L67)
 | H | intrinsic connectivity. | `zeros(p, p, m)`| Unused? Synaptic densities? Rows and columns for one source: **1** - excitatory spiny stellate cells (granular input cells); **2** - superficial pyramidal cells     (forward  output cells); **3** - inhibitory interneurons (intrisic interneuons); **4** - deep pyramidal cells (backward output cells) | Exponentation here: [spm_fx_cmm_NMDA.m#L83](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L87)
 | R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | because `u=0`, in my case. Actual meaning?
-| D | delays (unused) | `zeros(m, m)`| Why unused? Why this value?
-| Lpos | ROIs (unused) | `sparse(3,0)` | Why unused? When is it used?
+| D | delays | `zeros(m, m)`| Why this value?
+| Lpos | ROIs (unused) | `sparse(3,0)` | Source locations are not being estimated.
 | L | leadfield | `zeros(6,m)`| Dimensionality probably due to location (x y z) and direction (x y z). | This is where you see the parameters applied: [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m) !
 | J | contributing states |`zeros(1,16)`, except for `(1,2)=1`| Still don't understand this, because in `spm_fx_cmm_nmda.m`, the first population is excitatory spiny stellate cells. Why am I getting the info that it's the pyramidal cells?| From [spm_L_priors](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_L_priors.m#L24): `length(J)` = number of states per source. So you get 16 because you have 4 population and 4 states. Then you assume you have the same behavior for all 4 sources.
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| | Exponentiation here: [spm_csd_mtf_gu.m#L47](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L47). Basically, what you get is: `a*1/f^b`, where `a` and `b` are the exponentiated 
@@ -65,7 +65,7 @@ We now turn to the covariance parameter of these. Since the the meaning of the p
 | C | `[]`
 | H | `zeros(p, p, m)` | Rows and columns for one source: 1 - excitatory spiny stellate cells (granular input cells); 2 - superficial pyramidal cells     (forward  output cells); 3 - inhibitory interneurons (intrisic interneuons); 4 - deep pyramidal cells (backward output cells)
 | R | `ones(u,1)*[1/16 1/16]` --> `0×u empty double matrix` because `u=0`
-| D | `speye(m,m)/32` (unused) | Why this value?
+| D | `speye(m,m)/32` | Why this value?
 | Lpos | `sparse(3,0)` (unused) 
 | L | `64*ones(Nc,m)` | Why 64?
 | J | `zeros(1,16)`, expect for `(1,3)=1/32` and `(1,4)=1/32`| Why this value?
