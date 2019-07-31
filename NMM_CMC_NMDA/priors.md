@@ -22,7 +22,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | GA_intrin | input scale to AMPA for each of the m sources |  `zeros(m,1)` | Idem|
 | GG_intrin | input scale to GABA for each of the m sources.| `zeros(m,1)` | Idem |
 | GNi_intrin | input scale to interneurons NMDA | `zeros(m,1)` | Now just interneurons? Does it overwrite a previously defined value, like GN_intrin?|
-| GAi_intrin | Mg-switch sigmoid scale, slope and sensitivity. Meaning the third entry is unused. | `zeros(m,1)` | Confusing notation, but this parameter refers to NMDA non-linearity. Actually, it is unclear why it has m rows, when only the first three values are used (scale, slope, sensitivity).| spm_fx_cmm_NMDA.m |
+| Mg | Mg-switch sigmoid scale, slope and sensitivity. Meaning the third entry is unused. | `zeros(m,1)` | Confusing notation, but this parameter refers to NMDA non-linearity. Actually, it is unclear why it has m rows, when only the first three values are used (scale, slope, sensitivity).| spm_fx_cmm_NMDA.m |
 | GGi_intrin | input scale to GABA for each of the m sources.| `zeros(m,1)` (unused) | Only for interneurons? | 
 | CV | membrane capacitance for all p populations | `zeros(1,p)`| | Exponentation here [spm_fx_cmm_NMDA.m#L145](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L145)|
 | E | background noise | 0 | | Exponentation here: [spm_fx_cmm_NMDA.m#L166](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L166)
