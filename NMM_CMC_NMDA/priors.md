@@ -22,7 +22,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | GA_intrin | input scale to AMPA for each of the m sources |  `zeros(m,1)` | Idem|
 | GG_intrin | input scale to GABA for each of the m sources.| `zeros(m,1)` | Idem |
 | GNi_intrin | input scale to interneurons NMDA | `zeros(m,1)` | Now just interneurons? Does it overwrite a previously defined value, like GN_intrin?|
-| Mg | Mg-switch sigmoid scale, slope and sensitivity. Meaning the third entry is unused. | `zeros(m,1)` | Confusing notation, but this parameter refers to NMDA non-linearity. Actually, it is unclear why it has m rows, when only the first three values are used (scale, slope, sensitivity).| spm_fx_cmm_NMDA.m |
+| Mg | Mg-switch sigmoid scale, slope and sensitivity.| `zeros(m,1)` | Confusing notation, but this parameter refers to NMDA non-linearity. Actually, it is unclear why it has m rows, when only the first three values are used (scale, slope, sensitivity).| spm_fx_cmm_NMDA.m |
 | GGi_intrin | input scale to GABA for each of the m sources.| `zeros(m,1)` (unused) | Only for interneurons? | 
 | CV | membrane capacitance for all p populations | `zeros(1,p)`| | Exponentation here [spm_fx_cmm_NMDA.m#L145](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L145)|
 | E | background noise | 0 | | Exponentation here: [spm_fx_cmm_NMDA.m#L166](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_fx_cmm_NMDA.m#L166)
@@ -33,7 +33,7 @@ Indeed, check out: [spm_fx_cmm_NMDA.m](https://github.com/spm/spm12/blob/master/
 | R | onset and dispersion |  `zeros(u,2)` --> `0×u empty double matrix` | because `u=0`, in my case. Actual meaning?
 | D | delays | `zeros(m, m)`| Why this value?
 | Lpos | ROIs (unused) | `sparse(3,0)` | Source locations are not being estimated.
-| L | leadfield | `zeros(6,m)`| Dimensionality probably due to location (x y z) and direction (x y z). | This is where you see the parameters applied: [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m) !
+| L | lead field parameters | `zeros(6,m)`| Dimensionality probably due to location (x y z) and direction (x y z). | This is where you see the parameters applied: [spm_erp_L.m](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_erp_L.m) !
 | J | contributing states |`zeros(1,16)`, except for `(1,2)=1`| Still don't understand this, because in `spm_fx_cmm_nmda.m`, the first population is excitatory spiny stellate cells. Why am I getting the info that it's the pyramidal cells?| From [spm_L_priors](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_L_priors.m#L24): `length(J)` = number of states per source. So you get 16 because you have 4 population and 4 states. Then you assume you have the same behavior for all 4 sources.
 |a | neuronal innovations (amplitude and exponent) |`zeros(2,m)`| | Exponentiation here: [spm_csd_mtf_gu.m#L47](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L47). Basically, what you get is: `a*1/f^b`, where `a` and `b` are the exponentiated 
 |b | channel noise (not source-specific, amplitude and exponent)  |`zeros(2,1)`| Not (source?) specific, hence the 1. | Exponentiation here: [spm_csd_mtf_gu.m#L73](https://github.com/spm/spm12/blob/master/toolbox/dcm_meeg/spm_csd_mtf_gu.m#L73)
