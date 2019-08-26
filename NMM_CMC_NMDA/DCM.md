@@ -141,7 +141,7 @@ DCM
 |    ├─── hC                                            # prespecified as 1/128 or 1/64? Why? What does this represent? Cov{h} of log-precision parameters (spm_nlsi_GN.m)
 |    ├─── m                                             # number of sources
 |    ├─── u: sparse(m,1)						# inputs or causes
-|    ├─── U									# channel eigenmodes
+|    ├─── U									# channel eigenmodes (spm_dcm_eeg_channelmodes.m)
 |    ├─── l = DCM.options.Nmodes
 |    ├─── Hz = DCM.xY.Hz						# Frequencies over which we are inverting.
 |    ├─── dt = DCM.xY.dt
